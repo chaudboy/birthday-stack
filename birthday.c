@@ -18,6 +18,7 @@ BIRTHDAY *prec = NULL;
 
 BIRTHDAY* indexBirthdayTab[12];
 
+
 bool
 compBirthdays(const BIRTHDAY* first, const BIRTHDAY* second)
 {
