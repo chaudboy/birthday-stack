@@ -6,9 +6,9 @@
     Known Issues:
     Version: 1.0
 */
-pd
+
 #include "chaudboy.h"
-hello
+
 int
 monthToNumber(const char* mois)
 {
