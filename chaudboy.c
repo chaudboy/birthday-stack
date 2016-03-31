@@ -7,7 +7,7 @@
     Version: 1.0
 */
 
-#include "chaudboy.h"
+#include "chaudboy.h" // test du script de commit
 
 int
 monthToNumber(const char* mois)
