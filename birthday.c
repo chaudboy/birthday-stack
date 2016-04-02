@@ -152,7 +152,7 @@ setBirthday(BIRTHDAY* ajout)
         cleanString(temp);
 
     }while( ret != true );
-    print(ANSI_COLOR)
+
     do
     {
         printf("\t\nEntrez le mois (au format xx): ");
@@ -183,8 +183,6 @@ setBirthday(BIRTHDAY* ajout)
 
     addBirthday(ajout);
 }
-
-hello, ceci est in inclu
 
 void
 addBirthday(BIRTHDAY *ajout)

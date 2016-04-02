@@ -1,7 +1,7 @@
 /*
     Author: Lionel Jamaigne
     Creation Date: 14/03/2016
-    Last Modified: 15/03/2016
+    Last Modified: 02/04/2016
     Last Modification:
     Known Issues:
     Version: 1.0
@@ -20,7 +20,7 @@ monthToNumber(const char* mois)
 
     int ret = 0;
 
-    if( strcmp("Janvier", mois) == 0 )
+    if( strcmp("Janvier", mois) == 0 ) // ceci est un commentaire
         ret = 1;
 
     else if( strcmp("Fevrier", mois) == 0 )
@@ -109,15 +109,42 @@ cleanString(char* temp)
 }
 
 void
-wait(void)
+pressKeyToContinue(void)
 {
-    printf("Enter a key to continue ..");
+    /*
+        Input:
+        Core:
+        Output:
+    */
+
+    printf("Press a key to continue ..");
     int temp = getchar();
+}
+
+void
+pressEnterToContinue(void)
+{
+    /*
+        Input:
+        Core:
+        Output:
+    */
+
+    printf("Press enter to continue ..");
+    int temp = getchar();
+
+    while( (temp = getchar()) != '\n' );
 }
 
 void
 printAllANSIColors(void)
 {
+    /*
+        Input:
+        Core:
+        Output:
+    */
+
     printf(ANSI_COLOR_OPPOSITE);
     printf(ANSI_COLOR_RED "RED\n" ANSI_COLOR_RESET);
     printf(ANSI_COLOR_GREEN "GREEN\n" ANSI_COLOR_RESET);
@@ -129,3 +156,73 @@ printAllANSIColors(void)
     printf(ANSI_COLOR_CYAN ANSI_COLOR_BACKGROUND "BACKGROUND\n" ANSI_COLOR_RESET);
     printf(ANSI_COLOR_GREY "GREY" ANSI_COLOR_RESET);
 }
+
+void
+clearScreen(void)
+{
+    /*
+        Input:
+        Core:
+        Output:
+    */
+
+    #if defined(unix) || defined(__unix__) || defined(__APPLE__) || defined(__linux__)
+        printf("\033[H\033[J");
+
+    #elif defined(_WIN32) || defined(_WIN64)
+        HANDLE                     hStdOut;
+        CONSOLE_SCREEN_BUFFER_INFO csbi;
+        DWORD                      count;
+        DWORD                      cellCount;
+        COORD                      homeCoords = { 0, 0 };
+
+        hStdOut = GetStdHandle( STD_OUTPUT_HANDLE );
+
+        if (hStdOut == INVALID_HANDLE_VALUE)
+            return;
+
+        /* Get the number of cells in the current buffer */
+        if (!GetConsoleScreenBufferInfo( hStdOut, &csbi ))
+            return;
+
+        cellCount = csbi.dwSize.X *csbi.dwSize.Y;
+
+        /* Fill the entire buffer with spaces */
+        if (!FillConsoleOutputCharacter(hStdOut, (TCHAR) ' ', cellCount, homeCoords, &count))
+            return;
+
+        /* Fill the entire buffer with the current colors and attributes */
+        if (!FillConsoleOutputAttribute(hStdOut, csbi.wAttributes, cellCount, homeCoords, &count))
+            return;
+
+        /* Move the cursor home */
+        SetConsoleCursorPosition( hStdOut, homeCoords );
+
+    #endif
+}
+
+/* Test pour unix like systems & peut etre linux
+void
+clearScreen(void)
+{
+    /*
+        Input:
+        Core:
+        Output:
+    */
+
+    if(!cur_term)
+    {
+        int result;
+        setupterm(NULL, STDOUT_FILENO, &result);
+
+        if(result<=0)
+            return;
+    }
+
+    putp(tigetstr("clear")); // putp communique avec le terminal & tigetstr recoit la bonne séquence d'échappement à envoyer
+
+}
+
+
+*/

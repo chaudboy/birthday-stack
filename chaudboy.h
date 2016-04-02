@@ -1,10 +1,10 @@
 /*
     Author: Lionel Jamaigne
     Creation Date: 26/02/2016
-    Last Modified: 15/03/2016
+    Last Modified: 02/04/2016
     Last Modification:
     Known Issues: none
-    Version: 1.0w
+    Version: 1.0
 */
 
 #ifndef CHAUDBOY_H
@@ -18,6 +18,15 @@
 #ifdef USEDEBUG
 #define DEBUG(s) printf(s)
 #endif
+
+/*
+#ifdef unix
+#define OS 10
+
+#elif _WIN64
+#define OS64
+
+*/
 
 #define true 1
 #define false 0
@@ -38,13 +47,15 @@
 
 
 #define MYERROR(s) fputs(s, stderr)
-#define clearScreen() printf(CLEAR_SCREEN)
+//#define clearScreen() printf(CLEAR_SCREEN)
 
 typedef int bool;
 
 void cleanString(char* temp);
+void clearScreen(void);
 void printCharValue(const char* string);
-void wait(void);
+void pressKeyToContinue(void);
+void pressEnterToContinue(void);
 void printAllANSIColors(void);
 
 int monthToNumber(const char* mois);

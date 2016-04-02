@@ -23,11 +23,10 @@ main(int argc, const char *argv[])
     char temp[3] = "";
     char test[] = "1";
 
-    printf(ANSI_COLOR_BOLD);
-    printAllANSIColors();
-    printf(ANSI_COLOR_RESET);
-
     if( argc > 1 && strcmp(argv[1], "-l") == 0 ) loadBirthdays();
+
+    pressKeyToContinue();
+    pressEnterToContinue();
 
     do
     {
