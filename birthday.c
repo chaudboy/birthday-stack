@@ -17,7 +17,7 @@ BIRTHDAY *last = NULL;
 BIRTHDAY *prec = NULL;
 
 BIRTHDAY* indexBirthdayTab[12];
-// salut
+
 
 bool
 compBirthdays(const BIRTHDAY* first, const BIRTHDAY* second)
