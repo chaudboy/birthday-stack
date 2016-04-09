@@ -26,7 +26,8 @@ typedef struct Birthday
 
 void printBirthdays(void);
 void printBirthday(const BIRTHDAY* temp);
-void alterIndex(BIRTHDAY* new);
+void alterIndexBirthdays(const BIRTHDAY* addedBirthday);
+void setIndexBirthdays(void);
 void sortBirthdays(const BIRTHDAY* new);
 void loadBirthdays(void);
 void saveBirthdays(void);

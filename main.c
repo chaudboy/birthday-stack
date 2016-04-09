@@ -1,7 +1,7 @@
 /*
     Author: Lionel Jamaigne
     Creation Date: ?
-    Last Modified: 08/04/2016
+    Last Modified: 09/04/2016
     Last Modification:
     Known Issues:
     Version: 1.0
@@ -23,6 +23,10 @@ main(int argc, const char *argv[])
     int choice = 0;
     char temp[3] = "";
 
+    clearScreen();
+
+    setIndexBirthdays();
+
     if( argc > 1 && strcmp(argv[1], "-l") == 0 )
         loadBirthdays();
 
@@ -39,6 +43,8 @@ main(int argc, const char *argv[])
 
         fgets(temp, sizeof(temp), stdin);
         choice = atoi(temp);
+
+        //clearScreen();
 
         cleanString(temp);
 
@@ -64,6 +70,12 @@ main(int argc, const char *argv[])
 
             default:
                 break;
+        }
+
+        if( choice != 7 )
+        {
+            pressEnterToContinue();
+            clearScreen();
         }
 
     }while( choice != 7 );

@@ -130,8 +130,9 @@ pressEnterToContinue(void)
         Output:
     */
 
-    printf("Press enter to continue ..");
-    int temp = getchar();
+    int temp = 0;
+
+    printf("\nPress enter to continue ..");
 
     while( (temp = getchar()) != '\n' );
 }
@@ -200,4 +201,46 @@ clearScreen(void)
         SetConsoleCursorPosition( hStdOut, homeCoords );
 
     #endif
+}
+
+void setInputString(const char* message, char* string, const int maxChar)
+{
+    /*
+        Input:
+        Core:
+        Output:
+    */
+
+    printf("%s", message);
+
+    fgets(string, maxChar+2, stdin);
+    cleanString(string);
+}
+
+void setInputNumber(const char* message, int* number, const int maxChar, const int min, const int max)
+{
+    /*
+        Input:
+        Core:
+        Output:
+    */
+
+    int flag = false;
+    char temp[30] = "";
+
+    do
+    {
+        printf("%s", message);
+
+        fgets(temp, maxChar+2, stdin);
+
+        if( checkIntBondaries(atoi(temp), min, max) == false )
+            flag = true;
+
+        else
+            *number = atoi(temp);
+
+    }while( flag == true );
+
+    cleanString(temp);
 }

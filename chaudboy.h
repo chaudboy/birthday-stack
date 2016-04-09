@@ -1,7 +1,7 @@
 /*
     Author: Lionel Jamaigne
     Creation Date: 26/02/2016
-    Last Modified: 07/04/2016
+    Last Modified: 09/04/2016
     Last Modification:
     Known Issues: none
     Version: 1.0
@@ -58,6 +58,8 @@ void printCharValue(const char* string);
 void pressKeyToContinue(void);
 void pressEnterToContinue(void);
 void printAllANSIColors(void);
+void setInputString(const char* message, char* string, const int maxChar);
+void setInputNumber(const char* message, int* number, const int maxChar, const int min, const int max);
 
 int monthToNumber(const char* mois);
 int getCurrentYear(void);

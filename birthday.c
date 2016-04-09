@@ -1,7 +1,7 @@
 /*
     Author: Lionel Jamaigne
     Creation Date: 26/02/2016
-    Last Modified: 08/04/2016
+    Last Modified: 09/04/2016
     Last Modification:
     Known Issues:
     Version: 1.0
@@ -12,8 +12,8 @@
 
 int nbCurBirthdays = 0;
 
-BIRTHDAY *first = NULL;
-BIRTHDAY* indexBirthdayTab[12];
+BIRTHDAY* first;
+BIRTHDAY* indexBirthday[12];
 
 bool
 compBirthdays(const BIRTHDAY* first, const BIRTHDAY* second)
@@ -24,17 +24,18 @@ compBirthdays(const BIRTHDAY* first, const BIRTHDAY* second)
         Output:
     */
 
-    if( first->mois < second->mois ) return true;
+    if( first->mois < second->mois )
+        return true;
+
     if( first->mois == second->mois )
-    {
-        if( first->jours < second->jours || first->jours == second->jours ) return true;
-    }
+        if( first->jours < second->jours || first->jours == second->jours )
+            return true;
 
     return false;
 }
 
 void
-alterIndex(BIRTHDAY* new)
+alterIndexBirthdays(const BIRTHDAY* addedBirthday)
 {
     /*
         Input:
@@ -42,7 +43,32 @@ alterIndex(BIRTHDAY* new)
         Output:
     */
 
-    indexBirthdayTab[(new->mois)++] = new;
+    for(int i=0 ; i<12 ; i++)
+    {
+        if( indexBirthday[i] = NULL )
+            indexBirthday[i] = addedBirthday;
+
+        else
+        {
+            if( compBirthdays(addedBirthday, indexBirthday[i]) )
+                indexBirthday[i] = addedBirthday;
+        }
+    }
+
+}
+
+void setIndexBirthdays(void)
+{
+    /*
+        Input:
+        Core:
+        Output:
+    */
+
+    for(int i=0 ; i<12 ; i++)
+    {
+        indexBirthday[i] = NULL;
+    }
 }
 
 void
@@ -242,7 +268,7 @@ printBirthdays(void)
     }
 
     else
-        MYERROR(ANSI_COLOR_YELLOW "NO BIRTHDAYS TO PRINT" ANSI_COLOR_RESET);
+        MYERROR("no birthdays to print\n");
 }
 
 void
@@ -302,7 +328,7 @@ cleanBirthdays(void)
     }
 
     else
-        MYERROR("no birthdays to delete");
+        MYERROR("no birthdays to delete\n");
 }
 
 void
@@ -314,7 +340,8 @@ loadBirthdays(void)
         Output: none
     */
 
-    cleanBirthdays();
+    if( first )
+        cleanBirthdays();
 
     FILE* file = NULL;
 
@@ -344,19 +371,19 @@ loadBirthdays(void)
                 fread(&(temp->mois), sizeof(int), 1, file);
                 fread(&(temp->annee), sizeof(int), 1, file);
 
-                addBirthday(temp);
+                addBirthday(temp); DEBUG("j ajout un annif");
 
                 i++;
             }
         }
-
+        DEBUG(" fini loadbirthdays");
 
         fclose(file);
     }
 
     else
     {
-        perror("Error in loadBirthdays ");
+        perror("Error in loadBirthdays");
     }
 
 }
@@ -374,8 +401,7 @@ saveBirthdays(void)
     {
         FILE* file = NULL;
 
-        file = fopen("birthdays.dat", "w+b"); DEBUG("ouverture du fichier\n");
-
+        file = fopen("birthdays.dat", "w+b");
 
         if(file)
         {
@@ -385,8 +411,8 @@ saveBirthdays(void)
 
             BIRTHDAY* temp = first;
 
-            fwrite(&nbCurBirthdays, sizeof(int), 1, file); DEBUG("entier ecrit\n");
-            DEBUG("avant tour de boucle\n");
+            fwrite(&nbCurBirthdays, sizeof(int), 1, file);
+
             while( i < nbCurBirthdays )
             {
                 printf("i = %d & nbCur = %d", i, nbCurBirthdays);
@@ -407,11 +433,7 @@ saveBirthdays(void)
     }
 
     else
-    {
-        MYERROR("NO BIRTHDAYS TO SAVE");
-    }
-
-    DEBUG("je me casse\n");
+        MYERROR("no birthdays to save\n");
 }
 
 int
@@ -501,7 +523,7 @@ printNextBirthday(void)
     }
 
     else
-        MYERROR("Il n'y a pas d'anniversaires en memoire");
+        MYERROR("there is not a single birthday in memory\n");
 
 }
 
