@@ -80,55 +80,65 @@ sortBirthdays(const BIRTHDAY* birthdayToAdd)
         Output:
     */
 
-    BIRTHDAY* temp = first;
     BIRTHDAY* newBirthdayZone = NULL;
-    bool flag = false;
-    int i = 0;
-
-    setTemplate("birthday");
-    createStack(nbCurBirthdays);
-
     newBirthdayZone = (BIRTHDAY*)malloc(sizeof(BIRTHDAY));
-    memcpy(newBirthdayZone, birthdayToAdd, sizeof(BIRTHDAY));
 
-    for(i=0 ; i<nbCurBirthdays && flag != true ; i++ ) // i scan the Dynamic Data Structure until i should be inserted before a BIRTHDAY struct or unless it's the end
+    if( newBirthdayZone )
     {
-        if( compBirthdays(temp, newBirthdayZone) )
-        {
-            pushStack(temp);
+        memcpy(newBirthdayZone, birthdayToAdd, sizeof(BIRTHDAY));
 
-            if( temp->psuiv != NULL )
-                temp = temp->psuiv;
+        BIRTHDAY* temp = first;
+
+        bool flag = false;
+        int i = 0;
+
+        setTemplate("birthday");
+        createStack(nbCurBirthdays);
+
+        for(i=0 ; i<nbCurBirthdays && flag != true ; i++ ) // i scan the Dynamic Data Structure until i should be inserted before a BIRTHDAY struct or unless it's the end
+        {
+            if( compBirthdays(temp, newBirthdayZone) )
+            {
+                pushStack(temp);
+
+                if( temp->psuiv != NULL )
+                    temp = temp->psuiv;
+            }
+
+            else
+                flag = true;
+        }
+
+        if( flag == true ) // i ran into a BIRTHDAY struct before which i should be inserted
+        {
+
+            if( --i == 0 ) // i have to be inserted before the first BIRTHDAY struct -> no need to popStack()
+            {
+                newBirthdayZone->psuiv = first;
+                first = newBirthdayZone;
+            }
+
+            else
+            {
+                BIRTHDAY* lastStackElem = popStack();
+                lastStackElem->psuiv = newBirthdayZone;
+                newBirthdayZone->psuiv = temp;
+            }
         }
 
         else
-            flag = true;
-    }
-
-    if( flag == true ) // i ran into a BIRTHDAY struct before which i should be inserted
-    {
-
-        if( --i == 0 ) // i have to be inserted before the first BIRTHDAY struct -> no need to popStack()
         {
-            newBirthdayZone->psuiv = first;
-            first = newBirthdayZone;
+            temp->psuiv = newBirthdayZone;
+            newBirthdayZone->psuiv = NULL;
         }
 
-        else
-        {
-            BIRTHDAY* lastStackElem = popStack();
-            lastStackElem->psuiv = newBirthdayZone;
-            newBirthdayZone->psuiv = temp;
-        }
+        alterIndexBirthdays(newBirthdayZone);
+        freeStack();
     }
 
     else
-    {
-        temp->psuiv = newBirthdayZone;
-        newBirthdayZone->psuiv = NULL;
-    }
+        MYERROR("malloc error in sortBirthdays");
 
-    freeStack();
 }
 
 bool
@@ -230,6 +240,8 @@ addBirthday(BIRTHDAY *ajout)
         {
             memcpy(first, ajout, sizeof(BIRTHDAY));
             first->psuiv = NULL;
+
+            alterIndexBirthdays(first);
         }
 
         else
