@@ -18,7 +18,7 @@ T**
 createStack(const int nbElems)
 {
     nbMaxElems = nbElems;
-    tab = (T**)malloc(sizeof(T)*nbElems);
+    tab = (T**)malloc(sizeof(T*)*nbElems);
 
     for(int i=0;i<nbElems;i++)
     {
@@ -34,12 +34,12 @@ pushStack(T* elem)
     if( !isFullStack() )
     {
         tab[nbCurElems] = elem;
-        printf("DANSLEPUSH valeurde nbCurElems = %d", nbCurElems);printBirthday(tab[nbCurElems]);
         nbCurElems++;
+        printf( ANSI_COLOR_RED "NOMBRE ELEMENTS DANS PILE = %d\n" ANSI_COLOR_RESET, nbCurElems);
     }
 
     else
-        MYERROR(ANSI_COLOR_YELLOW "The stack is currently full" ANSI_COLOR_RESET);
+        MYERROR("The stack is currently full");
 }
 
 T*
@@ -48,12 +48,11 @@ popStack(void)
     if( !isEmptyStack() )
     {
         T* temp = tab[nbCurElems-1];
-        printf("DANSLEPOP");printBirthday(temp);
         tab[--nbCurElems] = NULL;
         return temp;
     }
 
-    MYERROR(ANSI_COLOR_YELLOW "The stack is currently empty" ANSI_COLOR_RESET);
+    MYERROR("The stack is currently empty");
     return NULL;
 }
 

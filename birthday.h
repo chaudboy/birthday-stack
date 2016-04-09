@@ -1,7 +1,7 @@
 /*
     Author: Lionel Jamaigne
     Creation Date: 10/03/2016
-    Last Modified: 15/03/2016
+    Last Modified: 08/04/2016
     Last Modification:
     Known Issues:
     Version: 1.0
@@ -11,6 +11,7 @@
 #define BIRTHDAY_H
 
 #include "chaudboy.h"
+#include "date.h"
 #include <time.h>
 
 typedef struct Birthday
@@ -32,10 +33,14 @@ void saveBirthdays(void);
 void setBirthday(BIRTHDAY* ajout);
 void addBirthday(BIRTHDAY* ajout);
 void cleanBirthdays(void);
+void printNextBirthday(void);
 
 int getAge(const BIRTHDAY* person);
+int getDaysBeforeBirthday(const BIRTHDAY* birthday);
 
-bool isEmpty(void);
+bool isEmptyBirthdayList(void);
 bool compBirthdays(const BIRTHDAY* first, const BIRTHDAY* second);
+
+BIRTHDAY* getNextBirthday(void);
 
 #endif

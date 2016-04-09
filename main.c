@@ -1,7 +1,7 @@
 /*
     Author: Lionel Jamaigne
     Creation Date: ?
-    Last Modified: 15/03/2016
+    Last Modified: 08/04/2016
     Last Modification:
     Known Issues:
     Version: 1.0
@@ -14,6 +14,7 @@
 #include "chaudboy.h"
 #include "birthday.h"
 #include "stack.h"
+#include "date.h"
 
 int
 main(int argc, const char *argv[])
@@ -21,20 +22,19 @@ main(int argc, const char *argv[])
     BIRTHDAY *ajout;
     int choice = 0;
     char temp[3] = "";
-    char test[] = "1";
 
-    if( argc > 1 && strcmp(argv[1], "-l") == 0 ) loadBirthdays();
-
-    pressKeyToContinue();
-    pressEnterToContinue();
+    if( argc > 1 && strcmp(argv[1], "-l") == 0 )
+        loadBirthdays();
 
     do
     {
-        printf("\t\n1. Encoder une nouvelle date");
+        printf("\t\n1. Encoder un nouvel anniversaire");
         printf("\t\n2. Afficher les anniversaires");
-        printf("\t\n3. charger les anniversaires");
-        printf("\t\n4. sauvegarder les anniversaires");
-        printf("\t\n5. Quitter");
+        printf("\t\n3. Ouvrir un fichier d'anniversaires");
+        printf("\t\n4. Sauvegarder les anniversaires sur fichier");
+        printf("\t\n5. Afficher le prochain anniversaire");
+        printf("\t\n6. Supprimer les anniversaires en cours");
+        printf("\t\n7. Quitter");
         printf("\t\n\nVotre choix: ");
 
         fgets(temp, sizeof(temp), stdin);
@@ -56,11 +56,17 @@ main(int argc, const char *argv[])
             case 4: saveBirthdays();
                 break;
 
+            case 5: printNextBirthday();
+                break;
+
+            case 6: cleanBirthdays();
+                break;
+
             default:
                 break;
         }
 
-    }while( choice != 5 );
+    }while( choice != 7 );
 
     cleanBirthdays();
 

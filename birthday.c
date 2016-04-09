@@ -1,7 +1,7 @@
 /*
     Author: Lionel Jamaigne
     Creation Date: 26/02/2016
-    Last Modified: 15/03/2016
+    Last Modified: 08/04/2016
     Last Modification:
     Known Issues:
     Version: 1.0
@@ -13,11 +13,7 @@
 int nbCurBirthdays = 0;
 
 BIRTHDAY *first = NULL;
-BIRTHDAY *last = NULL;
-BIRTHDAY *prec = NULL;
-
 BIRTHDAY* indexBirthdayTab[12];
-// salut 2
 
 bool
 compBirthdays(const BIRTHDAY* first, const BIRTHDAY* second)
@@ -50,7 +46,7 @@ alterIndex(BIRTHDAY* new)
 }
 
 void
-sortBirthdays(const BIRTHDAY* new)
+sortBirthdays(const BIRTHDAY* birthdayToAdd)
 {
     /*
         Input:
@@ -59,51 +55,67 @@ sortBirthdays(const BIRTHDAY* new)
     */
 
     BIRTHDAY* temp = first;
-    BIRTHDAY* temp2 = NULL;
+    BIRTHDAY* newBirthdayZone = NULL;
     bool flag = false;
     int i = 0;
 
     setTemplate("birthday");
-    BIRTHDAY** tab = createStack(nbCurBirthdays);
-    printf("JE CREE UNE PILE DE %d ELEMENTS", nbCurBirthdays);
+    createStack(nbCurBirthdays);
+
+    newBirthdayZone = (BIRTHDAY*)malloc(sizeof(BIRTHDAY));
+    memcpy(newBirthdayZone, birthdayToAdd, sizeof(BIRTHDAY));
+
+    printf( ANSI_COLOR_RED ANSI_COLOR_BOLD "JE VIENS DE CREER UNE PILE DE %d ELEMENTS\n"ANSI_COLOR_RESET, nbCurBirthdays);
+
     for(i=0 ; i<nbCurBirthdays && flag != true ; i++ ) // i scan the Dynamic Data Structure until i should be inserted before a BIRTHDAY struct or unless it's the end
     {
-        if( compBirthdays(temp, new) )
+        if( compBirthdays(temp, newBirthdayZone) )
         {
             pushStack(temp);
-            if( temp->psuiv != NULL ) temp = temp->psuiv;
+
+            if( temp->psuiv != NULL )
+                temp = temp->psuiv;
         }
 
-        else flag = true;
+        else
+            flag = true;
     }
-
-    temp2 = (BIRTHDAY*)malloc(sizeof(BIRTHDAY)); // if there is something before or not i need the malloc to create the new birtday
-    memcpy(temp2, new, sizeof(BIRTHDAY));
 
     if( flag == true ) // i ran into a BIRTHDAY struct before which i should be inserted
     {
-        if( !isEmptyStack() ) // if there is at least 1 thing in the stack i know i have to get this element & make it point to my new zone
+        DEBUG("je dois me mettre avant\n");
+
+        if( --i == 0 ) // i have to be inserted before the first BIRTHDAY struct -> no need to popStack()
         {
-            DEBUG("PILE PAS VIDE\n");
-            BIRTHDAY* beforeNew = popStack();
-            beforeNew->psuiv = temp2;
-            DEBUG("FIN PILE PAS VIDE\n");
+            DEBUG("je dois etre en premiere place\n");
+            newBirthdayZone->psuiv = first;
+            first = newBirthdayZone;
         }
 
         else
         {
-            first = temp2;
-            temp2->psuiv = temp;
+            DEBUG("je suis entre 2 zones\n");
+            BIRTHDAY* lastStackElem = popStack();
+            lastStackElem->psuiv = newBirthdayZone;
+            newBirthdayZone->psuiv = temp;
+
         }
     }
 
-    else temp->psuiv = temp2;
+    else
+    {
+        temp->psuiv = newBirthdayZone;
+        newBirthdayZone->psuiv = NULL;
+    }
+
 
     freeStack();
+
+    DEBUG("pile liberee et fin tri par insertion\n");
 }
 
 bool
-isEmpty(void)
+isEmptyBirthdayList(void)
 {
     /*
         Input:  none
@@ -193,7 +205,7 @@ addBirthday(BIRTHDAY *ajout)
         Output: none
     */
 
-    if( isEmpty() )
+    if( isEmptyBirthdayList() )
     {
         first = (BIRTHDAY*)malloc(sizeof(BIRTHDAY));
         memcpy(first, ajout, sizeof(BIRTHDAY));
@@ -218,13 +230,14 @@ printBirthdays(void)
         Output: none
     */
 
-    BIRTHDAY* temp = first;
-
-    if( !isEmpty() )
+    if( !isEmptyBirthdayList() )
     {
-        while( temp != NULL )
+        BIRTHDAY* temp = first;
+
+        while( temp )
         {
-            printf("%s %s est n%c le %d/%d/%d et a %d an(s) \n",temp->prenom, temp->nom, '\x8a',temp->jours, temp->mois, temp->annee, getAge(temp));
+            printf("%s %s est n%c le %d/%d/%d et a %d an(s) \n",temp->prenom, temp->nom, '\xe9',temp->jours, temp->mois, temp->annee, getAge(temp));
+
             temp = temp->psuiv;
         }
     }
@@ -254,18 +267,31 @@ cleanBirthdays(void)
         Output: none
     */
 
-    if( !isEmpty() )
+    if( !isEmptyBirthdayList() )
     {
-        BIRTHDAY *temp = first;
+        BIRTHDAY *next = NULL;
+        BIRTHDAY *current = first;
 
-        while( temp )
+        /*do
         {
-          first = temp;
-          temp = first->psuiv;
+            if( current->psuiv )
+                next = current->psuiv;
 
-          free(first);
-        }
+            current = NULL;
+            free(current);
+
+
+            if( next )
+                current = next;
+
+        }while( next );*/
+        //current = NULL;
+        //free(first);
+        first = NULL;
     }
+
+    else
+        MYERROR("no birthdays to delete");
 }
 
 void
@@ -283,15 +309,26 @@ loadBirthdays(void)
 
     if(file)
     {
+        int nbBirthdays = 0;
+        int i = 0;
+
         fseek(file, 0, SEEK_SET);
         DEBUG("je passe dans loadbirthdays");
-        BIRTHDAY* temp = (BIRTHDAY*)malloc(sizeof(BIRTHDAY));
+        fread(&nbBirthdays, sizeof(int), 1, file);
+        BIRTHDAY* temp = (BIRTHDAY*)malloc(sizeof(BIRTHDAY)*nbBirthdays);
 
-        while( fread(temp, sizeof(BIRTHDAY), 1, file) == 1 )
+        while( nbBirthdays > i )
         {
-            DEBUG("1 + ");
+            fread(temp->prenom, sizeof(char)*15, 1, file);
+            fread(temp->nom, sizeof(char)*15, 1, file);
+
+            fread(temp->jours, sizeof(int), 1, file);
+            fread(temp->mois, sizeof(int), 1, file);
+            fread(temp->annee, sizeof(int), 1, file);
+
             addBirthday(temp);
-            BIRTHDAY* temp = (BIRTHDAY*)malloc(sizeof(BIRTHDAY));
+            temp = (BIRTHDAY*)malloc(sizeof(BIRTHDAY));
+            i++;
         }
 
         fclose(file);
@@ -313,21 +350,36 @@ saveBirthdays(void)
         Output: none
     */
 
-    if( !isEmpty() )
+    if( !isEmptyBirthdayList() )
     {
         FILE* file = NULL;
-        DEBUG("je passe par saveBirthdays");
-        file = fopen("birthdays.dat", "w+b");
+
+        file = fopen("birthdays.dat", "w+b"); DEBUG("ouverture du fichier\n");
+
 
         if(file)
         {
+            int i = 0;
+
             fseek(file, 0, SEEK_SET);
 
             BIRTHDAY* temp = first;
 
-            while( fwrite(temp, sizeof(BIRTHDAY), 1, file) == 1 );
+            fwrite(&nbCurBirthdays, sizeof(int), 1, file); DEBUG("entier ecrit\n");
+            DEBUG("avant tour de boucle\n");
+            while( i < nbCurBirthdays )
             {
+                DEBUG("tour de boucle\n");
+                fwrite(temp->prenom, sizeof(char)*15, 1, file);
+                fwrite(temp->nom, sizeof(char)*15, 1, file);
+
+                fwrite(&(temp->jours), sizeof(int), 1, file);
+                fwrite(&(temp->mois), sizeof(int), 1, file);
+                fwrite(&(temp->annee), sizeof(int), 1, file);
+
                 temp = temp->psuiv;
+
+                i++;
             }
 
             fclose(file);
@@ -336,8 +388,10 @@ saveBirthdays(void)
 
     else
     {
-        MYERROR( ANSI_COLOR_YELLOW "NO BIRTHDAYS TO SAVE" ANSI_COLOR_RESET );
+        MYERROR("NO BIRTHDAYS TO SAVE");
     }
+
+    DEBUG("je me casse\n");
 }
 
 int
@@ -369,4 +423,116 @@ getAge(const BIRTHDAY* person)
   	}
 
   	return age;
+}
+
+struct tm*
+getDate(void)
+{
+    time_t now = time(0);
+  	struct tm* local = localtime(&now);
+
+  	local->tm_year += 1900;
+    local->tm_mon += 1;
+
+    return local;
+}
+
+BIRTHDAY*
+getNextBirthday(void)
+{
+    int i = nbCurBirthdays;
+    bool found = false;
+    BIRTHDAY* temp = first;
+
+    struct tm* today = getDate();
+
+    while( !found && i<nbCurBirthdays )
+    {
+        if( temp->mois == today->tm_mon )
+        {
+            if( today->tm_mday < temp->jours )
+                found = true;
+        }
+
+        if( !found && i < nbCurBirthdays )
+            temp = temp->psuiv;
+    }
+
+    return temp;
+}
+
+void
+printNextBirthday(void)
+{
+    if( first )
+    {
+        BIRTHDAY* nextBirthday = getNextBirthday();
+        int age = getAge(nextBirthday);
+        age++;
+
+        printf("%s %s est n%c le %d/%d/%d et aura %d an(s) dans %d jours\n",nextBirthday->prenom,
+                                                                            nextBirthday->nom,
+                                                                            '\xe9',
+                                                                            nextBirthday->jours,
+                                                                            nextBirthday->mois,
+                                                                            nextBirthday->annee,
+                                                                            age,
+                                                                            getDaysBeforeBirthday(nextBirthday));
+    }
+
+    else
+        MYERROR("Il n'y a pas d'anniversaires en memoire");
+
+}
+
+int
+getDaysBeforeBirthday(const BIRTHDAY* birthday)
+{
+    struct tm* today = getDate();
+    int nbJours = 0;
+    int i = 0;
+    int diffMois = 0;
+
+    setBissextile();
+
+    if( today->tm_mon > birthday->mois || ( today->tm_mon == birthday->mois && today->tm_mday > birthday->jours ) )
+    {
+        diffMois = ((birthday->mois)+12) - today->tm_mon;
+    }
+
+    else if( today->tm_mon < birthday->mois )
+    {
+        diffMois = birthday->mois - today->tm_mon;
+    }
+
+    while( diffMois > 1 )
+    {
+        nbJours += daysPerMonth[(today->tm_mon)+i];
+
+        if( (today->tm_mon)+i == 11 )
+        {
+            i = 1;
+        }
+
+        else
+        {
+            i++;
+        }
+
+        diffMois--;
+    }
+
+    if( diffMois == 1 )
+    {
+        nbJours += (daysPerMonth[(today->tm_mon)+i] - today->tm_mday);
+        nbJours += (birthday->jours - 1);
+    }
+
+    else if( diffMois == 0 )
+    {
+        nbJours += (birthday->jours - today->tm_mday);
+    }
+
+    return nbJours;
+
 }

@@ -170,6 +170,7 @@ clearScreen(void)
         printf("\033[H\033[J");
 
     #elif defined(_WIN32) || defined(_WIN64)
+        #include <windows.h>
         HANDLE                     hStdOut;
         CONSOLE_SCREEN_BUFFER_INFO csbi;
         DWORD                      count;
@@ -200,29 +201,3 @@ clearScreen(void)
 
     #endif
 }
-
-/* Test pour unix like systems & peut etre linux
-void
-clearScreen(void)
-{
-    /*
-        Input:
-        Core:
-        Output:
-    */
-
-    if(!cur_term)
-    {
-        int result;
-        setupterm(NULL, STDOUT_FILENO, &result);
-
-        if(result<=0)
-            return;
-    }
-
-    putp(tigetstr("clear")); // putp communique avec le terminal & tigetstr recoit la bonne séquence d'échappement à envoyer
-
-}
-
-
-*/
