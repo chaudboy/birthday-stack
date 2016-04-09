@@ -47,7 +47,7 @@
 #define CLEAR_SCREEN          "\033[H\033[J" // UNIX // "\033[H\033[2J"
 
 
-#define MYERROR(s) fputs( ANSI_COLOR_BOLD ANSI_COLOR_RED s ANSI_COLOR_RESET, stderr)
+#define MYERROR(s) fputs( ANSI_COLOR_RED ANSI_COLOR_BOLD s ANSI_COLOR_RESET, stderr)
 //#define clearScreen() printf(CLEAR_SCREEN)
 
 typedef int bool;

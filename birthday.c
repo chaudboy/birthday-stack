@@ -65,8 +65,6 @@ sortBirthdays(const BIRTHDAY* birthdayToAdd)
     newBirthdayZone = (BIRTHDAY*)malloc(sizeof(BIRTHDAY));
     memcpy(newBirthdayZone, birthdayToAdd, sizeof(BIRTHDAY));
 
-    printf( ANSI_COLOR_RED ANSI_COLOR_BOLD "JE VIENS DE CREER UNE PILE DE %d ELEMENTS\n"ANSI_COLOR_RESET, nbCurBirthdays);
-
     for(i=0 ; i<nbCurBirthdays && flag != true ; i++ ) // i scan the Dynamic Data Structure until i should be inserted before a BIRTHDAY struct or unless it's the end
     {
         if( compBirthdays(temp, newBirthdayZone) )
@@ -83,22 +81,18 @@ sortBirthdays(const BIRTHDAY* birthdayToAdd)
 
     if( flag == true ) // i ran into a BIRTHDAY struct before which i should be inserted
     {
-        DEBUG("je dois me mettre avant\n");
 
         if( --i == 0 ) // i have to be inserted before the first BIRTHDAY struct -> no need to popStack()
         {
-            DEBUG("je dois etre en premiere place\n");
             newBirthdayZone->psuiv = first;
             first = newBirthdayZone;
         }
 
         else
         {
-            DEBUG("je suis entre 2 zones\n");
             BIRTHDAY* lastStackElem = popStack();
             lastStackElem->psuiv = newBirthdayZone;
             newBirthdayZone->psuiv = temp;
-
         }
     }
 
@@ -108,10 +102,7 @@ sortBirthdays(const BIRTHDAY* birthdayToAdd)
         newBirthdayZone->psuiv = NULL;
     }
 
-
     freeStack();
-
-    DEBUG("pile liberee et fin tri par insertion\n");
 }
 
 bool
@@ -208,8 +199,16 @@ addBirthday(BIRTHDAY *ajout)
     if( isEmptyBirthdayList() )
     {
         first = (BIRTHDAY*)malloc(sizeof(BIRTHDAY));
-        memcpy(first, ajout, sizeof(BIRTHDAY));
-        first->psuiv = NULL;
+
+        if( first )
+        {
+            memcpy(first, ajout, sizeof(BIRTHDAY));
+            first->psuiv = NULL;
+        }
+
+        else
+            MYERROR("malloc error in addBirthday");
+
     }
 
     else
@@ -269,8 +268,7 @@ cleanBirthdays(void)
 
     if( !isEmptyBirthdayList() )
     {
-        BIRTHDAY *next = NULL;
-        BIRTHDAY *current = first;
+        BIRTHDAY *temp = first;
 
         /*do
         {
@@ -285,9 +283,22 @@ cleanBirthdays(void)
                 current = next;
 
         }while( next );*/
-        //current = NULL;
-        //free(first);
-        first = NULL;
+
+        do
+        {
+            first = temp;
+
+            if( first->psuiv )
+            {
+                first = first->psuiv;
+                temp = first;
+            }
+
+
+            free(first);
+            first = NULL;
+
+        }while( temp->psuiv );
     }
 
     else
@@ -303,6 +314,8 @@ loadBirthdays(void)
         Output: none
     */
 
+    cleanBirthdays();
+
     FILE* file = NULL;
 
     file = fopen("birthdays.dat", "rb");
@@ -312,24 +325,31 @@ loadBirthdays(void)
         int nbBirthdays = 0;
         int i = 0;
 
-        fseek(file, 0, SEEK_SET);
-        DEBUG("je passe dans loadbirthdays");
+        rewind(file);
+
         fread(&nbBirthdays, sizeof(int), 1, file);
-        BIRTHDAY* temp = (BIRTHDAY*)malloc(sizeof(BIRTHDAY)*nbBirthdays);
 
-        while( nbBirthdays > i )
+        if( nbBirthdays > 0 )
         {
-            fread(temp->prenom, sizeof(char)*15, 1, file);
-            fread(temp->nom, sizeof(char)*15, 1, file);
+            nbCurBirthdays = nbBirthdays;
 
-            fread(temp->jours, sizeof(int), 1, file);
-            fread(temp->mois, sizeof(int), 1, file);
-            fread(temp->annee, sizeof(int), 1, file);
+            while( nbBirthdays > i )
+            {
+                BIRTHDAY* temp = (BIRTHDAY*)malloc(sizeof(BIRTHDAY));
 
-            addBirthday(temp);
-            temp = (BIRTHDAY*)malloc(sizeof(BIRTHDAY));
-            i++;
+                fread(temp->prenom, sizeof(char)*15, 1, file);
+                fread(temp->nom, sizeof(char)*15, 1, file);
+
+                fread(&(temp->jours), sizeof(int), 1, file);
+                fread(&(temp->mois), sizeof(int), 1, file);
+                fread(&(temp->annee), sizeof(int), 1, file);
+
+                addBirthday(temp);
+
+                i++;
+            }
         }
+
 
         fclose(file);
     }
@@ -361,7 +381,7 @@ saveBirthdays(void)
         {
             int i = 0;
 
-            fseek(file, 0, SEEK_SET);
+            rewind(file);
 
             BIRTHDAY* temp = first;
 
@@ -369,7 +389,7 @@ saveBirthdays(void)
             DEBUG("avant tour de boucle\n");
             while( i < nbCurBirthdays )
             {
-                DEBUG("tour de boucle\n");
+                printf("i = %d & nbCur = %d", i, nbCurBirthdays);
                 fwrite(temp->prenom, sizeof(char)*15, 1, file);
                 fwrite(temp->nom, sizeof(char)*15, 1, file);
 

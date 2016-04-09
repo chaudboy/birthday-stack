@@ -30,7 +30,7 @@ main(int argc, const char *argv[])
     {
         printf("\t\n1. Encoder un nouvel anniversaire");
         printf("\t\n2. Afficher les anniversaires");
-        printf("\t\n3. Ouvrir un fichier d'anniversaires");
+        printf("\t\n3. Charger un fichier d'anniversaires");
         printf("\t\n4. Sauvegarder les anniversaires sur fichier");
         printf("\t\n5. Afficher le prochain anniversaire");
         printf("\t\n6. Supprimer les anniversaires en cours");

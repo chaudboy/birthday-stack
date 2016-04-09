@@ -20,10 +20,20 @@ createStack(const int nbElems)
     nbMaxElems = nbElems;
     tab = (T**)malloc(sizeof(T*)*nbElems);
 
-    for(int i=0;i<nbElems;i++)
+    if( tab )
     {
-        tab[i] = NULL;
+        for(int i=0;i<nbElems;i++)
+        {
+            tab[i] = NULL;
+        }
     }
+
+    else
+    {
+        MYERROR("malloc error in createStack");
+    }
+
+
 
     return tab;
 }
@@ -35,7 +45,6 @@ pushStack(T* elem)
     {
         tab[nbCurElems] = elem;
         nbCurElems++;
-        printf( ANSI_COLOR_RED "NOMBRE ELEMENTS DANS PILE = %d\n" ANSI_COLOR_RESET, nbCurElems);
     }
 
     else
