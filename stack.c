@@ -68,6 +68,7 @@ popStack(void)
 void freeStack(void)
 {
     free(tab);
+    tab = NULL;
 }
 
 T*

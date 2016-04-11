@@ -272,7 +272,7 @@ printBirthdays(void)
 
         while( temp )
         {
-            printf("%s %s est n%c le %d/%d/%d et a %d an(s) \n",temp->prenom, temp->nom, '\xe9',temp->jours, temp->mois, temp->annee, getAge(temp));
+            printf("%s %s est ne le %d/%d/%d et a %d an%c \n",temp->prenom, temp->nom, temp->jours, temp->mois, temp->annee, getAge(temp), getAge(temp) > 1 ? 's' : ' ');
 
             temp = temp->psuiv;
         }
@@ -291,7 +291,7 @@ printBirthday(const BIRTHDAY* temp)
         Output: none
     */
 
-    printf("%s %s est n%c le %d/%d/%d et a %d an(s) \n",temp->prenom, temp->nom, '\xe9',temp->jours, temp->mois, temp->annee, getAge(temp));
+    printf("%s %s est ne le %d/%d/%d et a %d an%c \n",temp->prenom, temp->nom, temp->jours, temp->mois, temp->annee, getAge(temp), getAge(temp) > 1 ? 's' : ' ');
 }
 
 void
@@ -529,9 +529,8 @@ printNextBirthday(void)
         int age = getAge(nextBirthday);
         age++;
 
-        printf("%s %s est n%c le %d/%d/%d et aura %d an(s) dans %d jours\n",nextBirthday->prenom,
+        printf("%s %s est ne le %d/%d/%d et aura %d an(s) dans %d jours\n",nextBirthday->prenom,
                                                                             nextBirthday->nom,
-                                                                            '\xe9',
                                                                             nextBirthday->jours,
                                                                             nextBirthday->mois,
                                                                             nextBirthday->annee,
@@ -614,18 +613,35 @@ deleteBirthday(void)
     if( !isEmptyBirthdayList() )
     {
         bool found = false;
-        char prenom[20] = "lionel";
-        char nom[20] = "jamaigne";
+        BIRTHDAY input;
+
+        strcmp(input.prenom, "lionel");
+        strcmp(input.nom, "jamaigne");
+
+        input.mois = input.jours = 1;
+        input.annee = 2000;
 
         BIRTHDAY* temp = first;
 
+        setTemplate("birthday");
+        createStack(nbCurBirthdays);
+
+        printBirthday(first);
+
         do
         {
-            if( strcmp(temp->prenom, prenom) == 0 && strcmp(temp->nom, nom) == 0 )
+            if( isBirthdayEqual(temp, &input) )
+            {
+                DEBUG("j'ai trouve");
                 found = true;
+            }
+
 
             else
+            {
+                pushStack(temp);
                 temp = temp->psuiv;
+            }
 
 
         }while( temp && !found );
@@ -635,7 +651,13 @@ deleteBirthday(void)
 
         else if( found )
         {
+            if( !isEmptyStack() )
+            {
+                ;
+            }
 
+            else
+                free(temp);
         }
 
         nbCurBirthdays--;
