@@ -1,7 +1,7 @@
 /*
     Author: Lionel Jamaigne
     Creation Date: ?
-    Last Modified: 09/04/2016
+    Last Modified: 10/04/2016
     Last Modification:
     Known Issues:
     Version: 1.0
@@ -38,7 +38,8 @@ main(int argc, const char *argv[])
         printf("\t\n4. Sauvegarder les anniversaires sur fichier");
         printf("\t\n5. Afficher le prochain anniversaire");
         printf("\t\n6. Supprimer les anniversaires en cours");
-        printf("\t\n7. Quitter");
+        printf("\t\n7. Supprimer un anniversaire");
+        printf("\t\n8. Quitter");
         printf("\t\n\nVotre choix: ");
 
         fgets(temp, sizeof(temp), stdin);
@@ -68,17 +69,20 @@ main(int argc, const char *argv[])
             case 6: cleanBirthdays();
                 break;
 
+            case 7: deleteBirthday();
+                break;
+
             default:
                 break;
         }
 
-        if( choice != 7 )
+        if( choice != 8 )
         {
             pressEnterToContinue();
             clearScreen();
         }
 
-    }while( choice != 7 );
+    }while( choice != 8 );
 
     cleanBirthdays();
 

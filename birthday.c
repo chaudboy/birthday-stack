@@ -1,7 +1,7 @@
 /*
     Author: Lionel Jamaigne
     Creation Date: 26/02/2016
-    Last Modified: 09/04/2016
+    Last Modified: 11/04/2016
     Last Modification:
     Known Issues:
     Version: 1.0
@@ -35,7 +35,7 @@ compBirthdays(const BIRTHDAY* first, const BIRTHDAY* second)
 }
 
 void
-alterIndexBirthdays(const BIRTHDAY* addedBirthday)
+addBirthdayToIndex(const BIRTHDAY* addedBirthday)
 {
     /*
         Input:
@@ -43,16 +43,13 @@ alterIndexBirthdays(const BIRTHDAY* addedBirthday)
         Output:
     */
 
-    for(int i=0 ; i<12 ; i++)
-    {
-        if( indexBirthday[i] = NULL )
-            indexBirthday[i] = addedBirthday;
+    if( indexBirthday[addedBirthday->mois] == NULL )
+        indexBirthday[addedBirthday->mois] = addedBirthday;
 
-        else
-        {
-            if( compBirthdays(addedBirthday, indexBirthday[i]) )
-                indexBirthday[i] = addedBirthday;
-        }
+    else
+    {
+        if( compBirthdays(addedBirthday, indexBirthday[addedBirthday->mois]) )
+            indexBirthday[addedBirthday->mois] = addedBirthday;
     }
 
 }
@@ -132,7 +129,7 @@ sortBirthdays(const BIRTHDAY* birthdayToAdd)
             newBirthdayZone->psuiv = NULL;
         }
 
-        alterIndexBirthdays(newBirthdayZone);
+        addBirthdayToIndex(newBirthdayZone);
         freeStack();
     }
 
@@ -241,11 +238,13 @@ addBirthday(BIRTHDAY *ajout)
             memcpy(first, ajout, sizeof(BIRTHDAY));
             first->psuiv = NULL;
 
-            alterIndexBirthdays(first);
+            addBirthdayToIndex(first);
         }
 
         else
             MYERROR("malloc error in addBirthday");
+
+        printf("\nAnniversaire ajoute");
 
     }
 
@@ -383,14 +382,15 @@ loadBirthdays(void)
                 fread(&(temp->mois), sizeof(int), 1, file);
                 fread(&(temp->annee), sizeof(int), 1, file);
 
-                addBirthday(temp); DEBUG("j ajout un annif");
+                addBirthday(temp);
 
                 i++;
             }
         }
-        DEBUG(" fini loadbirthdays");
 
         fclose(file);
+
+        printf("\nAnniversair%s sauvegard%s.", nbCurBirthdays > 1 ? 'es' :'e', nbCurBirthdays > 1 ? 'es' : 'e');
     }
 
     else
@@ -479,21 +479,15 @@ getAge(const BIRTHDAY* person)
   	return age;
 }
 
-struct tm*
-getDate(void)
-{
-    time_t now = time(0);
-  	struct tm* local = localtime(&now);
-
-  	local->tm_year += 1900;
-    local->tm_mon += 1;
-
-    return local;
-}
-
 BIRTHDAY*
 getNextBirthday(void)
 {
+    /*
+        Input:
+        Core:
+        Output:
+    */
+
     int i = nbCurBirthdays;
     bool found = false;
     BIRTHDAY* temp = first;
@@ -518,6 +512,12 @@ getNextBirthday(void)
 void
 printNextBirthday(void)
 {
+    /*
+        Input:
+        Core:
+        Output:
+    */
+
     if( first )
     {
         BIRTHDAY* nextBirthday = getNextBirthday();
@@ -542,6 +542,12 @@ printNextBirthday(void)
 int
 getDaysBeforeBirthday(const BIRTHDAY* birthday)
 {
+    /*
+        Input:
+        Core:
+        Output:
+    */
+
     struct tm* today = getDate();
     int nbJours = 0;
     int i = 0;
@@ -589,4 +595,64 @@ getDaysBeforeBirthday(const BIRTHDAY* birthday)
 
     return nbJours;
 
+}
+
+BIRTHDAY*
+deleteBirthday(void)
+{
+    /*
+        Input:
+        Core:
+        Output:
+    */
+
+    if( !isEmptyBirthdayList() )
+    {
+        bool found = false;
+        char prenom[20] = "lionel";
+        char nom[20] = "jamaigne";
+
+        BIRTHDAY* temp = first;
+
+        do
+        {
+            if( strcmp(temp->prenom, prenom) == 0 && strcmp(temp->nom, nom) == 0 )
+            {
+                DEBUG("j'ai trouve !");
+                found = true;
+            }
+
+            else
+                temp = temp->psuiv;
+
+
+        }while( temp && !found );
+    }
+
+    else
+        MYERROR("There is not any birthday in memory");
+}
+
+void removeBirthdayFromIndex(const BIRTHDAY* birthday)
+{
+    /*
+        Input:
+        Core:
+        Output:
+    */
+
+    if( isBirthdayEqual(birthday, indexBirthday[birthday->mois]) )
+        indexBirthday[birthday->mois] = NULL;
+
+}
+
+bool isBirthdayEqual(const BIRTHDAY* b1, const BIRTHDAY* b2)
+{
+    /*
+        Input:
+        Core:
+        Output:
+    */
+
+    return true == ( b1->jours == b2->jours && b1->mois == b2->mois && b1->annee == b2->annee && strcmp(b1->nom, b2->nom) == 0 && strcmp(b1->prenom, b2->prenom) == 0 );
 }

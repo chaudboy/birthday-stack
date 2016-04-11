@@ -1,7 +1,7 @@
 /*
     Author: Lionel Jamaigne
     Creation Date: 14/03/2016
-    Last Modified: 02/04/2016
+    Last Modified: 10/04/2016
     Last Modification:
     Known Issues:
     Version: 1.0
@@ -62,6 +62,12 @@ monthToNumber(const char* mois)
 bool
 checkIntBondaries(const int number, const int min, const int max)
 {
+    /*
+        Input:
+        Core:
+        Output:
+    */
+
     bool ret;
 
     if( number < min || number > max )
@@ -76,6 +82,12 @@ checkIntBondaries(const int number, const int min, const int max)
 int
 getCurrentYear(void)
 {
+    /*
+        Input:
+        Core:
+        Output:
+    */
+
     time_t now = time(0);
 	struct tm* local = localtime(&now);
 
@@ -87,6 +99,12 @@ getCurrentYear(void)
 void
 printCharValue(const char* string)
 {
+    /*
+        Input:
+        Core:
+        Output:
+    */
+
     for(int i=0;i<strlen(string);i++)
     {
         printf("%d %c ", string[i], string[i]);
@@ -203,7 +221,26 @@ clearScreen(void)
     #endif
 }
 
-void setInputString(const char* message, char* string, const int maxChar)
+struct tm*
+getDate(void)
+{
+    /*
+        Input:
+        Core:
+        Output:
+    */
+
+    time_t now = time(0);
+  	struct tm* local = localtime(&now);
+
+  	local->tm_year += 1900;
+    local->tm_mon += 1;
+
+    return local;
+}
+
+void
+setInputString(const char* message, char* string, const int maxChar)
 {
     /*
         Input:
@@ -217,7 +254,8 @@ void setInputString(const char* message, char* string, const int maxChar)
     cleanString(string);
 }
 
-void setInputNumber(const char* message, int* number, const int maxChar, const int min, const int max)
+void
+setInputNumber(const char* message, int* number, const int maxChar, const int min, const int max)
 {
     /*
         Input:
@@ -243,4 +281,19 @@ void setInputNumber(const char* message, int* number, const int maxChar, const i
     }while( flag == true );
 
     cleanString(temp);
+}
+
+void
+printAllASCIIChars(void)
+{
+    /*
+        Input:
+        Core:
+        Output:
+    */
+
+    for(int i=0 ; i<= 255 ; i++)
+    {
+        printf("Dec %d - Hexa %x - Char %c\n", i, i, i);
+    }
 }

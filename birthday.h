@@ -1,7 +1,7 @@
 /*
     Author: Lionel Jamaigne
     Creation Date: 10/03/2016
-    Last Modified: 08/04/2016
+    Last Modified: 11/04/2016
     Last Modification:
     Known Issues:
     Version: 1.0
@@ -26,7 +26,8 @@ typedef struct Birthday
 
 void printBirthdays(void);
 void printBirthday(const BIRTHDAY* temp);
-void alterIndexBirthdays(const BIRTHDAY* addedBirthday);
+void addBirthdayToIndex(const BIRTHDAY* addedBirthday);
+void removeBirthdayFromIndex(const BIRTHDAY* birthday);
 void setIndexBirthdays(void);
 void sortBirthdays(const BIRTHDAY* new);
 void loadBirthdays(void);
@@ -41,7 +42,9 @@ int getDaysBeforeBirthday(const BIRTHDAY* birthday);
 
 bool isEmptyBirthdayList(void);
 bool compBirthdays(const BIRTHDAY* first, const BIRTHDAY* second);
+bool isBirthdayEqual(const BIRTHDAY* b1, const BIRTHDAY* b2);
 
 BIRTHDAY* getNextBirthday(void);
+BIRTHDAY* deleteBirthday(void);
 
 #endif

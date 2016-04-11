@@ -1,7 +1,7 @@
 /*
     Author: Lionel Jamaigne
     Creation Date: 26/02/2016
-    Last Modified: 09/04/2016
+    Last Modified: 11/04/2016
     Last Modification:
     Known Issues:
     Version: 1.0
@@ -115,4 +115,7 @@ setTemplate(const char* string)
     {
         typedef BIRTHDAY T;
     }
+
+    else
+        MYERROR("wrong template in setTemplate");
 }

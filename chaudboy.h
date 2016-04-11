@@ -1,7 +1,7 @@
 /*
     Author: Lionel Jamaigne
     Creation Date: 26/02/2016
-    Last Modified: 09/04/2016
+    Last Modified: 10/04/2016
     Last Modification:
     Known Issues: none
     Version: 1.0
@@ -46,7 +46,6 @@
 #define ANSI_COLOR_RESET      "\x1b[0m" // UNIX
 #define CLEAR_SCREEN          "\033[H\033[J" // UNIX // "\033[H\033[2J"
 
-
 #define MYERROR(s) fputs( ANSI_COLOR_RED ANSI_COLOR_BOLD s ANSI_COLOR_RESET, stderr)
 //#define clearScreen() printf(CLEAR_SCREEN)
 
@@ -58,8 +57,10 @@ void printCharValue(const char* string);
 void pressKeyToContinue(void);
 void pressEnterToContinue(void);
 void printAllANSIColors(void);
+void printAllASCIIChars(void);
 void setInputString(const char* message, char* string, const int maxChar);
 void setInputNumber(const char* message, int* number, const int maxChar, const int min, const int max);
+struct tm* getDate(void);
 
 int monthToNumber(const char* mois);
 int getCurrentYear(void);
