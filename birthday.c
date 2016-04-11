@@ -12,7 +12,7 @@
 
 int nbCurBirthdays = 0;
 
-BIRTHDAY* first;
+BIRTHDAY* first = NULL;;
 BIRTHDAY* indexBirthday[12];
 
 bool
@@ -336,6 +336,10 @@ cleanBirthdays(void)
             first = NULL;
 
         }while( temp->psuiv );
+
+        printf("Anniversair%s supprim%es", nbCurBirthdays > 1 ? "es" : "e", nbCurBirthdays > 1 ? "es" : "e");
+
+        nbCurBirthdays = 0;
     }
 
     else
@@ -390,7 +394,8 @@ loadBirthdays(void)
 
         fclose(file);
 
-        printf("\nAnniversair%s sauvegard%s.", nbCurBirthdays > 1 ? 'es' :'e', nbCurBirthdays > 1 ? 'es' : 'e');
+        printf("\nAnniversair%s sauvegard%s", nbCurBirthdays > 1 ? "es" :"e", nbCurBirthdays > 1 ? "es" : "e");
+
     }
 
     else
@@ -535,7 +540,7 @@ printNextBirthday(void)
     }
 
     else
-        MYERROR("there is not a single birthday in memory\n");
+        MYERROR("there is not any birthday in memory\n");
 
 }
 
@@ -617,16 +622,23 @@ deleteBirthday(void)
         do
         {
             if( strcmp(temp->prenom, prenom) == 0 && strcmp(temp->nom, nom) == 0 )
-            {
-                DEBUG("j'ai trouve !");
                 found = true;
-            }
 
             else
                 temp = temp->psuiv;
 
 
         }while( temp && !found );
+
+        if( !temp & !found )
+            printf("Cet anniversaire n'existe pas");
+
+        else if( found )
+        {
+
+        }
+
+        nbCurBirthdays--;
     }
 
     else
