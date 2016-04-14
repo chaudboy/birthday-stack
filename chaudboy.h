@@ -1,7 +1,7 @@
 /*
     Author: Lionel Jamaigne
     Creation Date: 26/02/2016
-    Last Modified: 10/04/2016
+    Last Modified: 13/04/2016
     Last Modification:
     Known Issues: none
     Version: 1.0
@@ -60,12 +60,13 @@ void printAllANSIColors(void);
 void printAllASCIIChars(void);
 void setInputString(const char* message, char* string, const int maxChar);
 void setInputNumber(const char* message, int* number, const int maxChar, const int min, const int max);
-struct tm* getDate(void);
-
-int monthToNumber(const char* mois);
-int getCurrentYear(void);
+void setInputPassword(const char* message, char* string, const int maxChar, const char charToDisplay);
+void loadLogin(const char* fileName);
+void createUsersFile(const char* fileName);
 
 bool checkIntBondaries(const int number, const int min, const int max);
+
+char getchUnix(void);
 
 #endif
 

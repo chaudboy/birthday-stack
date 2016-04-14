@@ -1,7 +1,7 @@
 /*
     Author: Lionel Jamaigne
     Creation Date: 26/02/2016
-    Last Modified: 11/04/2016
+    Last Modified: 12/04/2016
     Last Modification:
     Known Issues:
     Version: 1.0
@@ -26,6 +26,7 @@ createStack(const int nbElems)
         {
             tab[i] = NULL;
         }
+        //DEBUG("je viens de creer une stack sans soucis\n");
     }
 
     else
@@ -45,6 +46,7 @@ pushStack(T* elem)
     {
         tab[nbCurElems] = elem;
         nbCurElems++;
+        //DEBUG("push OK pile non pleine\n");
     }
 
     else
@@ -58,15 +60,19 @@ popStack(void)
     {
         T* temp = tab[nbCurElems-1];
         tab[--nbCurElems] = NULL;
+        //DEBUG("pop OK je vais retourner l'annif");
         return temp;
     }
 
-    MYERROR("The stack is currently empty");
+    else
+        MYERROR("The stack is currently empty");
+
     return NULL;
 }
 
 void freeStack(void)
 {
+    nbCurElems = nbMaxElems = 0;
     free(tab);
     tab = NULL;
 }
@@ -87,6 +93,7 @@ bool
 isFullStack(void)
 {
     return tab[nbMaxElems-1] ? true : false;
+    //return true == (nbCurElems == nbMaxElems);
 }
 
 void
@@ -115,6 +122,7 @@ setTemplate(const char* string)
     else if( strcmp("birthday", string) == 0 )
     {
         typedef BIRTHDAY T;
+        //DEBUG("je set le template d'annifs\n");
     }
 
     else

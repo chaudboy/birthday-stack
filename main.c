@@ -1,7 +1,7 @@
 /*
     Author: Lionel Jamaigne
     Creation Date: ?
-    Last Modified: 10/04/2016
+    Last Modified: 13/04/2016
     Last Modification:
     Known Issues:
     Version: 1.0
@@ -16,8 +16,12 @@
 #include "stack.h"
 #include "date.h"
 
+#define USERSFILE "usersFile.dat"
+
+void checkArgument(const int argc, const char *argv[]);
+
 int
-main(int argc, const char *argv[])
+main(int argc, char *argv[])
 {
     BIRTHDAY *ajout;
     int choice = 0;
@@ -25,10 +29,11 @@ main(int argc, const char *argv[])
 
     clearScreen();
 
+    createUsersFile(USERSFILE);
+
     setIndexBirthdays();
 
-    if( argc > 1 && strcmp(argv[1], "-l") == 0 )
-        loadBirthdays();
+    checkArgument(argc, argv);
 
     do
     {
@@ -44,8 +49,6 @@ main(int argc, const char *argv[])
 
         fgets(temp, sizeof(temp), stdin);
         choice = atoi(temp);
-
-        //clearScreen();
 
         cleanString(temp);
 
@@ -87,4 +90,32 @@ main(int argc, const char *argv[])
     cleanBirthdays();
 
     return EXIT_SUCCESS;
+}
+
+void
+checkArgument(const int argc, const char *argv[])
+{
+    /*
+        Input:
+        Core:
+        Output:
+    */
+
+    if( argc > 1 )
+    {
+        int i = 0;
+
+        do
+        {
+            if( strcmp(argv[i+1], "-lb") == 0 )
+                loadBirthdays();
+
+
+            else if( strcmp(argv[i+1], "-login") == 0 )
+                loadLogin(USERSFILE);
+
+            i++;
+
+        }while( i+1 < argc );
+    }
 }

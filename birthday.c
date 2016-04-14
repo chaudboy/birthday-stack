@@ -1,7 +1,7 @@
 /*
     Author: Lionel Jamaigne
     Creation Date: 26/02/2016
-    Last Modified: 11/04/2016
+    Last Modified: 12/04/2016
     Last Modification:
     Known Issues:
     Version: 1.0
@@ -12,7 +12,7 @@
 
 int nbCurBirthdays = 0;
 
-BIRTHDAY* first = NULL;;
+BIRTHDAY* first = NULL;
 BIRTHDAY* indexBirthday[12];
 
 bool
@@ -43,13 +43,13 @@ addBirthdayToIndex(const BIRTHDAY* addedBirthday)
         Output:
     */
 
-    if( indexBirthday[addedBirthday->mois] == NULL )
-        indexBirthday[addedBirthday->mois] = addedBirthday;
+    if( indexBirthday[(addedBirthday->mois)-1] == NULL )
+        indexBirthday[-(addedBirthday->mois)-1] = addedBirthday;
 
     else
     {
-        if( compBirthdays(addedBirthday, indexBirthday[addedBirthday->mois]) )
-            indexBirthday[addedBirthday->mois] = addedBirthday;
+        if( compBirthdays(addedBirthday, indexBirthday[(addedBirthday->mois)]) )
+            indexBirthday[(addedBirthday->mois)-1] = addedBirthday;
     }
 
 }
@@ -91,6 +91,7 @@ sortBirthdays(const BIRTHDAY* birthdayToAdd)
 
         setTemplate("birthday");
         createStack(nbCurBirthdays);
+        //printf("je viens de creer une pile de %d elements", nbCurBirthdays);
 
         for(i=0 ; i<nbCurBirthdays && flag != true ; i++ ) // i scan the Dynamic Data Structure until i should be inserted before a BIRTHDAY struct or unless it's the end
         {
@@ -337,7 +338,7 @@ cleanBirthdays(void)
 
         }while( temp->psuiv );
 
-        printf("Anniversair%s supprim%es", nbCurBirthdays > 1 ? "es" : "e", nbCurBirthdays > 1 ? "es" : "e");
+        printf("Anniversair%s supprim%ss", nbCurBirthdays > 1 ? "es" : "e", nbCurBirthdays > 1 ? "es" : "e");
 
         nbCurBirthdays = 0;
     }
@@ -615,9 +616,8 @@ deleteBirthday(void)
         bool found = false;
         BIRTHDAY input;
 
-        strcmp(input.prenom, "lionel");
-        strcmp(input.nom, "jamaigne");
-
+        strcpy(input.nom, "jamaigne");
+        strcpy(input.prenom, "lionel");
         input.mois = input.jours = 1;
         input.annee = 2000;
 
@@ -626,16 +626,13 @@ deleteBirthday(void)
         setTemplate("birthday");
         createStack(nbCurBirthdays);
 
-        printBirthday(first);
+        //printBirthday(first);
+        //printBirthday(&input);
 
         do
         {
             if( isBirthdayEqual(temp, &input) )
-            {
-                DEBUG("j'ai trouve");
                 found = true;
-            }
-
 
             else
             {
@@ -651,13 +648,38 @@ deleteBirthday(void)
 
         else if( found )
         {
-            if( !isEmptyStack() )
+            if( !isEmptyStack() ) // stack not empty so what i found is at least 2nd
             {
-                ;
+                BIRTHDAY* previous = popStack();
+
+                if( temp->psuiv ) // there is something after
+                {
+                    previous->psuiv = temp->psuiv;
+
+                }
+
+                else // only 2 birthdays
+                    previous->psuiv = NULL;
+
+                free(temp);
             }
 
-            else
-                free(temp);
+            else // nothing is in the stack so what i found is 1st
+            {
+                if( temp->psuiv ) // something after
+                {
+                    first = temp->psuiv;
+                    free(temp);
+                }
+
+                else // there was only 1 birthday so i initialize "first" & free the zone
+                {
+                    free(first);
+                    first = NULL;
+                }
+            }
+
+            printf("Anniversaire supprime");
         }
 
         nbCurBirthdays--;

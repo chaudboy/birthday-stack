@@ -1,63 +1,13 @@
 /*
     Author: Lionel Jamaigne
     Creation Date: 14/03/2016
-    Last Modified: 10/04/2016
+    Last Modified: 13/04/2016
     Last Modification:
     Known Issues:
     Version: 1.0
 */
 
 #include "chaudboy.h" // test du script de commit
-
-int
-monthToNumber(const char* mois)
-{
-    /*
-        Input:  the address of a day of the week
-        Core:   sends back the number relative to the good month passed as a const char*
-        Output: the month's number
-    */
-
-    int ret = 0;
-
-    if( strcmp("Janvier", mois) == 0 ) // ceci est un commentaire
-        ret = 1;
-
-    else if( strcmp("Fevrier", mois) == 0 )
-        ret = 2;
-
-     else if( strcmp("Mars", mois) == 0 )
-        ret = 3;
-
-    else if( strcmp("Avril", mois) == 0 )
-        ret = 4;
-
-    else if( strcmp("Mai", mois) == 0 )
-        ret = 5;
-
-    else if( strcmp("Juin", mois) == 0 )
-        ret = 6;
-
-    else if( strcmp("Juillet", mois) == 0 )
-        ret = 7;
-
-    else if( strcmp("Aout", mois) == 0 )
-        ret = 8;
-
-    else if( strcmp("Septembre", mois) == 0 )
-        ret = 9;
-
-    else if( strcmp("Octobre", mois) == 0 )
-        ret = 10;
-
-    else if( strcmp("Novembre", mois) == 0 )
-        ret = 11;
-
-    else if( strcmp("Decembre", mois) == 0 )
-        ret = 12;
-
-    return ret;
-}
 
 bool
 checkIntBondaries(const int number, const int min, const int max)
@@ -76,24 +26,7 @@ checkIntBondaries(const int number, const int min, const int max)
     else
         ret = true;
 
-    return ret;
-}
-
-int
-getCurrentYear(void)
-{
-    /*
-        Input:
-        Core:
-        Output:
-    */
-
-    time_t now = time(0);
-	struct tm* local = localtime(&now);
-
-	local->tm_year += 1900;
-
-	return local->tm_year;
+    return ret;g
 }
 
 void
@@ -221,24 +154,6 @@ clearScreen(void)
     #endif
 }
 
-struct tm*
-getDate(void)
-{
-    /*
-        Input:
-        Core:
-        Output:
-    */
-
-    time_t now = time(0);
-  	struct tm* local = localtime(&now);
-
-  	local->tm_year += 1900;
-    local->tm_mon += 1;
-
-    return local;
-}
-
 void
 setInputString(const char* message, char* string, const int maxChar)
 {
@@ -284,6 +199,34 @@ setInputNumber(const char* message, int* number, const int maxChar, const int mi
 }
 
 void
+setInputPassword(const char* message, char* string, const int maxChar, const char charToDisplay)
+{
+    /*
+        Input:
+        Core:
+        Output:
+    */
+
+    char input[20] = "";
+    char retour = 0;
+    int i = 0;
+
+    printf("%s", message);
+
+    while( retour != '\n' && i < maxChar && i < 18 )
+    {
+        retour = getchUnix();
+        input[i] = retour;
+        printf("%c", charToDisplay);
+
+        i++;
+    }
+
+    cleanString(input);
+    strcpy(string, input);
+}
+
+void
 printAllASCIIChars(void)
 {
     /*
@@ -296,4 +239,97 @@ printAllASCIIChars(void)
     {
         printf("Dec %d - Hexa %x - Char %c\n", i, i, i);
     }
+}
+
+void
+loadLogin(const char* fileName)
+{
+    /*
+        Input:
+        Core:
+        Output:
+    */
+
+    char login[10] = "";
+    char password[10] = "";
+
+    char loginFile[10] = "";
+    char passwordFile[10] = "";
+
+    setInputString("\n\tLogin: ", login, 8);
+    setInputPassword("\n\tPassword: ", password, 8, '*');
+
+    FILE* usersFile = NULL;
+
+    if( usersFile = fopen(fileName, "rb") )
+    {
+        rewind(usersFile);
+
+        fread(loginFile, sizeof(char)*10, 1, usersFile);
+        fread(passwordFile, sizeof(char)*10, 1, usersFile);
+
+        if( strcmp(loginFile, login) != 0 && strcmp(loginFile, password) != 0 )
+        {
+            MYERROR("wrong login or password");
+        }
+
+        else
+            clearScreen();
+    }
+}
+
+void
+createUsersFile(const char* fileName)
+{
+    /*
+        Input:
+        Core:
+        Output:
+    */
+
+    char login[10] = "root";
+    char password[10] = "root";
+
+    FILE* usersFile = NULL;
+
+    if( usersFile = fopen(fileName, "wb") )
+    {
+        rewind(usersFile);
+
+        fwrite(login, sizeof(char)*10, 1, usersFile);
+        fwrite(password, sizeof(char)*10, 1, usersFile);
+    }
+
+    else
+        perror("fopen() error in createUsersFile()");
+
+    fclose(usersFile);
+}
+
+char
+getchUnix(void)
+{
+    #include <unistd.h>   //_getch*/
+    #include <termios.h>  //_getch*/
+
+    char buf=0;
+    struct termios old={0};
+    fflush(stdout);
+    if(tcgetattr(0, &old)<0)
+        perror("tcsetattr()");
+    old.c_lflag&=~ICANON;
+    old.c_lflag&=~ECHO;
+    old.c_cc[VMIN]=1;
+    old.c_cc[VTIME]=0;
+    if(tcsetattr(0, TCSANOW, &old)<0)
+        perror("tcsetattr ICANON");
+    if(read(0,&buf,1)<0)
+        perror("read()");
+    old.c_lflag|=ICANON;
+    old.c_lflag|=ECHO;
+    if(tcsetattr(0, TCSADRAIN, &old)<0)
+        perror ("tcsetattr ~ICANON");
+    //printf("%c\n",buf);
+
+    return buf;
 }
