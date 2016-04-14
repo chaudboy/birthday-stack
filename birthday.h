@@ -14,6 +14,8 @@
 #include "date.h"
 #include <time.h>
 
+
+ss
 typedef struct Birthday
 {
     char prenom[15];

@@ -7,31 +7,6 @@
     Version: 1.0
 */
 
-hahapd
-fgh
-fg
-hfg
-hfg
-h
-fgh
-h
-f
-gh
-gfh
-f
-h
-fg
-hfg
-h
-fgh
-fg
-hgf
-h
-gfh
-fg
-hfg
-
-
 #include "chaudboy.h"
 
 bool
