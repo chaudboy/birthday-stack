@@ -7,6 +7,8 @@
     Version: 1.0
 */
 
+haha
+
 #include "chaudboy.h" // test du script de commit
 
 bool
