@@ -26,7 +26,7 @@ checkIntBondaries(const int number, const int min, const int max)
     else
         ret = true;
 
-    return ret;g
+    return ret;
 }
 
 void
@@ -68,8 +68,22 @@ pressKeyToContinue(void)
         Output:
     */
 
+    struct  termios argin, argout;
+    unsigned char   ch = 0;
+
     printf("Press a key to continue ..");
-    int temp = getchar();
+    fputs("Press a key to continue", stderr);
+
+    tcgetattr(0,&argin);
+    argout = argin;
+    argout.c_lflag &= ~(ICANON);
+    argout.c_iflag &= ~(ICRNL);
+    argout.c_oflag &= ~(OPOST);
+    argout.c_cc[VMIN] = 1;
+    argout.c_cc[VTIME] = 0;
+    tcsetattr(0,TCSADRAIN,&argout);
+    read(0, &ch, 1);
+    tcsetattr(0,TCSADRAIN,&argin);
 }
 
 void
@@ -309,11 +323,9 @@ createUsersFile(const char* fileName)
 char
 getchUnix(void)
 {
-    #include <unistd.h>   //_getch*/
-    #include <termios.h>  //_getch*/
-
     char buf=0;
     struct termios old={0};
+
     fflush(stdout);
     if(tcgetattr(0, &old)<0)
         perror("tcsetattr()");

@@ -14,20 +14,16 @@
 #include <time.h>
 #include <stdio.h>
 
+#if defined(unix) || defined(__unix__) || defined(__APPLE__) || defined(__linux__)
+    #include <unistd.h>   //_getch & pressKeyToContinue //
+    #include <termios.h>  //_getch & pressKeyToContinue //
+#endif
+
 #define USEDEBUG
 
 #ifdef USEDEBUG
 #define DEBUG(s) fputs( ANSI_COLOR_BOLD ANSI_COLOR_YELLOW s ANSI_COLOR_RESET, stderr)
 #endif
-
-/*
-#ifdef unix
-#define OS 10
-
-#elif _WIN64
-#define OS64
-
-*/
 
 #define true 1
 #define false 0
@@ -47,14 +43,13 @@
 #define CLEAR_SCREEN          "\033[H\033[J" // UNIX // "\033[H\033[2J"
 
 #define MYERROR(s) fputs( ANSI_COLOR_RED ANSI_COLOR_BOLD s ANSI_COLOR_RESET, stderr)
-//#define clearScreen() printf(CLEAR_SCREEN)
 
 typedef int bool;
 
 void cleanString(char* temp);
 void clearScreen(void);
 void printCharValue(const char* string);
-void pressKeyToContinue(void);
+void pressKeyToContinue(void); // UNIX
 void pressEnterToContinue(void);
 void printAllANSIColors(void);
 void printAllASCIIChars(void);

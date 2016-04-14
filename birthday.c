@@ -1,7 +1,7 @@
 /*
     Author: Lionel Jamaigne
     Creation Date: 26/02/2016
-    Last Modified: 12/04/2016
+    Last Modified: 14/04/2016
     Last Modification:
     Known Issues:
     Version: 1.0
@@ -11,6 +11,9 @@
 #include "stack.h"
 
 int nbCurBirthdays = 0;
+int lastDayCheckForSoonBirthdays = 0;
+
+bool checkForSoonBirthdayToday = false;
 
 BIRTHDAY* first = NULL;
 BIRTHDAY* indexBirthday[12];
@@ -711,4 +714,53 @@ bool isBirthdayEqual(const BIRTHDAY* b1, const BIRTHDAY* b2)
     */
 
     return true == ( b1->jours == b2->jours && b1->mois == b2->mois && b1->annee == b2->annee && strcmp(b1->nom, b2->nom) == 0 && strcmp(b1->prenom, b2->prenom) == 0 );
+}
+
+void checkIfBirthdaySoon(void)
+{
+    /*
+        Input:
+        Core:
+        Output:
+    */
+
+    if( !isEmptyBirthdayList() )
+    {
+        struct tm* currentDate = getDate();
+
+        if( !checkForSoonBirthdayToday && currentDate->tm_mday != lastDayCheckForSoonBirthdays )
+        {
+            BIRTHDAY* nextBirthday = getNextBirthday();
+
+            int nbJours = getDaysBeforeBirthday(nextBirthday);
+
+            if( nbJours <= 7 )
+            {
+                switch(nbJours)
+                {
+                    case 1: printf("Demain %s %s fetera son anniversaire & aura %d ans !", nextBirthday->prenom,
+                                                                                         nextBirthday->nom,
+                                                                                         getAge(nextBirthday)+1);
+                        break;
+
+                    case 2: printf("Apres demain %s %s fetera son anniversaire & aura %d ans !", nextBirthday->prenom,
+                                                                                               nextBirthday->nom,
+                                                                                               getAge(nextBirthday)+1);
+                        break;
+
+                    default: printf("Dans %d jours %s %s fetera son anniversaire & aura %d ans !", nbJours,
+                                                                                                 nextBirthday->prenom,
+                                                                                                 nextBirthday->nom,
+                                                                                                 getAge(nextBirthday)+1);
+                        break;
+                }
+            }
+
+            checkForSoonBirthdayToday = true;
+            lastDayCheckForSoonBirthdays = currentDate->tm_mday;
+        }
+
+        else if( checkForSoonBirthdayToday && currentDate->tm_mday != lastDayCheckForSoonBirthdays )
+            checkForSoonBirthdayToday = false;
+    }
 }

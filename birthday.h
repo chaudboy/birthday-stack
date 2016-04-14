@@ -1,7 +1,7 @@
 /*
     Author: Lionel Jamaigne
     Creation Date: 10/03/2016
-    Last Modified: 13/04/2016
+    Last Modified: 14/04/2016
     Last Modification:
     Known Issues:
     Version: 1.0
@@ -14,8 +14,6 @@
 #include "date.h"
 #include <time.h>
 
-sdsd
-ss
 typedef struct Birthday
 {
     char prenom[15];
@@ -38,6 +36,7 @@ void setBirthday(BIRTHDAY* ajout);
 void addBirthday(BIRTHDAY* ajout);
 void cleanBirthdays(void);
 void printNextBirthday(void);
+void checkIfBirthdaySoon(void);
 
 int getAge(const BIRTHDAY* person);
 int getDaysBeforeBirthday(const BIRTHDAY* birthday);

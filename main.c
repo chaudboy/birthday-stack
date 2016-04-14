@@ -37,6 +37,8 @@ main(int argc, char *argv[])
 
     do
     {
+        checkIfBirthdaySoon();
+
         printf("\t\n1. Encoder un nouvel anniversaire");
         printf("\t\n2. Afficher les anniversaires");
         printf("\t\n3. Charger un fichier d'anniversaires");
@@ -55,6 +57,7 @@ main(int argc, char *argv[])
         switch(choice)
         {
             case 1: setBirthday(ajout);
+                    checkIfBirthdaySoon();
                 break;
 
             case 2: printBirthdays();
