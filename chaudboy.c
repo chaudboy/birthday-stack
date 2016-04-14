@@ -7,9 +7,32 @@
     Version: 1.0
 */
 
-haha
+hahapd
+fgh
+fg
+hfg
+hfg
+h
+fgh
+h
+f
+gh
+gfh
+f
+h
+fg
+hfg
+h
+fgh
+fg
+hgf
+h
+gfh
+fg
+hfg
 
-#include "chaudboy.h" // test du script de commit
+
+#include "chaudboy.h"
 
 bool
 checkIntBondaries(const int number, const int min, const int max)
