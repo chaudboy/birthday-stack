@@ -15,6 +15,7 @@
 #include "birthday.h"
 #include "stack.h"
 #include "date.h"
+#include "aes256.h"
 
 #define USERSFILE "usersFile.dat"
 

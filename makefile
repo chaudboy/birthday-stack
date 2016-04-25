@@ -7,7 +7,7 @@
 
 .SILENT:
 
-OBJS = stack.o birthday.o chaudboy.o date.o
+OBJS = stack.o birthday.o chaudboy.o date.o aes256.o
 
 GCC = gcc -w -std=c99
 
@@ -33,5 +33,12 @@ date.o:		date.c date.h
 			echo creation de date.o
 			$(GCC) -c date.c
 
+aes256.o:	aes256.c aes256.h
+			echo creation de aes256.o
+			$(GCC) -c aes256.c
+
 clean:
 		rm -f $(OBJS)
+
+run:
+	appli
