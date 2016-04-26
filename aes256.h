@@ -17,6 +17,16 @@
 *   ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 *   OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 */
+
+/*
+    Author: ?
+    Creation Date: ?
+    Last Modified: ?
+    Last Modification: ?
+    Known Issues: ?
+    Version: ?
+*/
+
 #ifndef uint8_t
 #define uint8_t  unsigned char
 #endif

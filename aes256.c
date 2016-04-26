@@ -17,6 +17,16 @@
 *   ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 *   OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 */
+
+/*
+    Author: ?
+    Creation Date: ?
+    Last Modified: ?
+    Last Modification: ?
+    Known Issues: ?
+    Version: ?
+*/
+
 #include "aes256.h"
 
 #define FD(x)  (((x) >> 1) ^ (((x) & 1) ? 0x8d : 0))

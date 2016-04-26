@@ -1,7 +1,7 @@
 /*
     Author: Lionel Jamaigne
     Creation Date: 26/02/2016
-    Last Modified: 14/04/2016
+    Last Modified: 26/04/2016
     Last Modification:
     Known Issues:
     Version: 1.0
@@ -18,6 +18,7 @@ bool checkForSoonBirthdayToday = false;
 BIRTHDAY* first = NULL;
 BIRTHDAY* indexBirthday[12];
 
+/******************************************************************************/
 bool
 compBirthdays(const BIRTHDAY* first, const BIRTHDAY* second)
 {
@@ -35,8 +36,10 @@ compBirthdays(const BIRTHDAY* first, const BIRTHDAY* second)
             return true;
 
     return false;
-}
 
+} /* bool compBirthdays(const BIRTHDAY* first, const BIRTHDAY* second) */
+
+/******************************************************************************/
 void
 addBirthdayToIndex(const BIRTHDAY* addedBirthday)
 {
@@ -55,9 +58,11 @@ addBirthdayToIndex(const BIRTHDAY* addedBirthday)
             indexBirthday[(addedBirthday->mois)-1] = addedBirthday;
     }
 
-}
+} /* void addBirthdayToIndex(const BIRTHDAY* addedBirthday) */
 
-void setIndexBirthdays(void)
+/******************************************************************************/
+void
+setIndexBirthdays(void)
 {
     /*
         Input:
@@ -69,8 +74,10 @@ void setIndexBirthdays(void)
     {
         indexBirthday[i] = NULL;
     }
-}
 
+} /* void setIndexBirthdays(void) */
+
+/******************************************************************************/
 void
 sortBirthdays(const BIRTHDAY* birthdayToAdd)
 {
@@ -140,8 +147,9 @@ sortBirthdays(const BIRTHDAY* birthdayToAdd)
     else
         MYERROR("malloc error in sortBirthdays");
 
-}
+} /* void sortBirthdays(const BIRTHDAY* birthdayToAdd) */
 
+/******************************************************************************/
 bool
 isEmptyBirthdayList(void)
 {
@@ -152,8 +160,10 @@ isEmptyBirthdayList(void)
     */
 
     return first ? false : true;
-}
 
+} /* bool isEmptyBirthdayList(void) */
+
+/******************************************************************************/
 void
 setBirthday(BIRTHDAY* ajout)
 {
@@ -222,8 +232,10 @@ setBirthday(BIRTHDAY* ajout)
     }while( ret != true );
 
     addBirthday(ajout);
-}
 
+} /* void setBirthday(BIRTHDAY* ajout) */
+
+/******************************************************************************/
 void
 addBirthday(BIRTHDAY *ajout)
 {
@@ -259,8 +271,9 @@ addBirthday(BIRTHDAY *ajout)
 
     nbCurBirthdays++;
 
-}
+} /* void addBirthday(BIRTHDAY *ajout) */
 
+/******************************************************************************/
 void
 printBirthdays(void)
 {
@@ -284,8 +297,10 @@ printBirthdays(void)
 
     else
         MYERROR("no birthdays to print\n");
-}
 
+} /* void printBirthdays(void) */
+
+/******************************************************************************/
 void
 printBirthday(const BIRTHDAY* temp)
 {
@@ -296,8 +311,10 @@ printBirthday(const BIRTHDAY* temp)
     */
 
     printf("%s %s est ne le %d/%d/%d et a %d an%c \n",temp->prenom, temp->nom, temp->jours, temp->mois, temp->annee, getAge(temp), getAge(temp) > 1 ? 's' : ' ');
-}
 
+} /* void printBirthday(const BIRTHDAY* temp) */
+
+/******************************************************************************/
 void
 cleanBirthdays(void)
 {
@@ -348,8 +365,10 @@ cleanBirthdays(void)
 
     else
         MYERROR("no birthdays to delete\n");
-}
 
+} /* void cleanBirthdays(void) */
+
+/******************************************************************************/
 void
 loadBirthdays(void)
 {
@@ -407,8 +426,9 @@ loadBirthdays(void)
         perror("Error in loadBirthdays");
     }
 
-}
+} /* void loadBirthdays(void) */
 
+/******************************************************************************/
 void
 saveBirthdays(void)
 {
@@ -455,8 +475,10 @@ saveBirthdays(void)
 
     else
         MYERROR("no birthdays to save\n");
-}
 
+} /* saveBirthdays(void) */
+
+/******************************************************************************/
 int
 getAge(const BIRTHDAY* person)
 {
@@ -486,8 +508,10 @@ getAge(const BIRTHDAY* person)
   	}
 
   	return age;
-}
 
+} /* int tAge(const BIRTHDAY* person) */
+
+/******************************************************************************/
 BIRTHDAY*
 getNextBirthday(void)
 {
@@ -516,8 +540,10 @@ getNextBirthday(void)
     }
 
     return temp;
-}
 
+} /* BIRTHDAY* getNextBirthday(void) */
+
+/******************************************************************************/
 void
 printNextBirthday(void)
 {
@@ -545,8 +571,9 @@ printNextBirthday(void)
     else
         MYERROR("there is not any birthday in memory\n");
 
-}
+} /* void printNextBirthday(void) */
 
+/******************************************************************************/
 int
 getDaysBeforeBirthday(const BIRTHDAY* birthday)
 {
@@ -603,8 +630,9 @@ getDaysBeforeBirthday(const BIRTHDAY* birthday)
 
     return nbJours;
 
-}
+} /* int getDaysBeforeBirthday(const BIRTHDAY* birthday) */
 
+/******************************************************************************/
 BIRTHDAY*
 deleteBirthday(void)
 {
@@ -690,9 +718,12 @@ deleteBirthday(void)
 
     else
         MYERROR("There is not any birthday in memory");
-}
 
-void removeBirthdayFromIndex(const BIRTHDAY* birthday)
+} /* BIRTHDAY* deleteBirthday(void) */
+
+/******************************************************************************/
+void
+removeBirthdayFromIndex(const BIRTHDAY* birthday)
 {
     /*
         Input:
@@ -703,9 +734,11 @@ void removeBirthdayFromIndex(const BIRTHDAY* birthday)
     if( isBirthdayEqual(birthday, indexBirthday[birthday->mois]) )
         indexBirthday[birthday->mois] = NULL;
 
-}
+} /* void removeBirthdayFromIndex(const BIRTHDAY* birthday) */
 
-bool isBirthdayEqual(const BIRTHDAY* b1, const BIRTHDAY* b2)
+/******************************************************************************/
+bool
+isBirthdayEqual(const BIRTHDAY* b1, const BIRTHDAY* b2)
 {
     /*
         Input:
@@ -714,9 +747,12 @@ bool isBirthdayEqual(const BIRTHDAY* b1, const BIRTHDAY* b2)
     */
 
     return true == ( b1->jours == b2->jours && b1->mois == b2->mois && b1->annee == b2->annee && strcmp(b1->nom, b2->nom) == 0 && strcmp(b1->prenom, b2->prenom) == 0 );
-}
 
-void checkIfBirthdaySoon(void)
+} /*bool isBirthdayEqual(const BIRTHDAY* b1, const BIRTHDAY* b2) */
+
+/******************************************************************************/
+void
+checkIfBirthdaySoon(void)
 {
     /*
         Input:
@@ -763,4 +799,5 @@ void checkIfBirthdaySoon(void)
         else if( checkForSoonBirthdayToday && currentDate->tm_mday != lastDayCheckForSoonBirthdays )
             checkForSoonBirthdayToday = false;
     }
-}
+
+} /* void checkIfBirthdaySoon(void) */
