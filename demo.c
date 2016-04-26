@@ -34,20 +34,20 @@ int main (int argc, char *argv[])
 
     /* put a test vector */
     //for (i = 0; i < sizeof(buf);i++) buf[i] = i * 16 + i;
-    for (i = 0; i < sizeof(buf);i++) strcpy(&buf[i], "c");
+    /*for (i = 0; i < sizeof(buf);i++)*/ strcpy(buf, "plain text to cipher");
     for (i = 0; i < sizeof(key);i++) key[i] = i;
 
     DUMP("txt: ", i, buf, sizeof(buf));
     DUMP("key: ", i, key, sizeof(key));
     printf("---\n");
 
-    //aes256_init(&ctx, key);
+    aes256_init(&ctx, key);
     aes256_encrypt_ecb(&ctx, buf);
 
     DUMP("enc: ", i, buf, sizeof(buf));
     //printf("tst: 8e a2 b7 ca 51 67 45 bf ea fc 49 90 4b 49 60 89\n");
 //aes256_init(&ctx, key);
-    aes256_init(&ctx, key);
+    //aes256_init(&ctx, key);
     aes256_decrypt_ecb(&ctx, buf);
     DUMP("dec: ", i, buf, sizeof(buf));
 

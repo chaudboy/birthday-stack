@@ -19,6 +19,11 @@
 
 #define USERSFILE "usersFile.dat"
 
+#define DUMP(s, i, buf, sz)  {printf(s);                   \
+                              for (i = 0; i < (sz);i++)    \
+                                  printf("%c", buf[i]); \
+                              printf("\n");}
+
 void checkArgument(const int argc, const char *argv[]);
 
 int
@@ -28,7 +33,30 @@ main(int argc, char *argv[])
     int choice = 0;
     char temp[3] = "";
 
-    clearScreen();
+    printf("bloc de test aes256");
+    {
+        aes256_context ctx;
+        uint8_t key[32];
+        uint8_t buf[16], i;
+
+        for (i = 0; i < sizeof(key);i++) key[i] = i;
+
+        strcpy(buf, "plaintexttoencrypt");
+
+        DUMP("txt: ", i, buf, sizeof(buf));
+        DUMP("key: ", i, key, sizeof(key));
+
+
+        aes256_encrypt_ecb(&ctx, buf);
+        aes256_decrypt_ecb(&ctx, buf);
+        DUMP("dec: ", i, buf, sizeof(buf));
+
+        aes256_done(&ctx);
+
+    }
+
+
+    //clearScreen();
 
     createUsersFile(USERSFILE);
 
