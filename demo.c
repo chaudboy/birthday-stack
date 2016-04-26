@@ -21,6 +21,8 @@
 #include "aes256.h"
 #include <string.h>
 
+/* ceci est un comm */
+
 #define DUMP(s, i, buf, sz)  {printf(s);                   \
                               for (i = 0; i < (sz);i++)    \
                                   printf("%c ", buf[i]); \
