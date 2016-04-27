@@ -233,8 +233,6 @@ setBirthday(BIRTHDAY* ajout)
 
     }while( ret != true );
 
-    addBirthday(ajout);
-
 } /* void setBirthday(BIRTHDAY* ajout) */
 
 /******************************************************************************/
@@ -710,6 +708,7 @@ deleteBirthday(void)
             printf("Anniversaire supprime");
         }
 
+        free(input);
         nbCurBirthdays--;
     }
 

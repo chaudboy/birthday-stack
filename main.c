@@ -57,6 +57,7 @@ main(int argc, char *argv[])
         {
             case 1: setBirthday(ajout);
                     addBirthday(ajout);
+                    free(ajout);
                 break;
 
             case 2: printBirthdays();
