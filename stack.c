@@ -43,7 +43,8 @@ createStack(const int nbElems)
 
 
     return tab;
-}
+
+} /* T** createStack(const int nbElems) */
 
 /******************************************************************************/
 void
@@ -64,7 +65,8 @@ pushStack(T* elem)
 
     else
         MYERROR("The stack is currently full");
-}
+
+} /* void pushStack(T* elem) */
 
 /******************************************************************************/
 T*
@@ -88,7 +90,8 @@ popStack(void)
         MYERROR("The stack is currently empty");
 
     return NULL;
-}
+
+} /* T* popStack(void) */
 
 /******************************************************************************/
 void
@@ -103,7 +106,8 @@ freeStack(void)
     nbCurElems = nbMaxElems = 0;
     free(tab);
     tab = NULL;
-}
+
+} /* void freeStack(void) */
 
 /******************************************************************************/
 T*
@@ -116,10 +120,11 @@ getLastElemStack(void)
     */
 
     return tab[nbCurElems-1];
-}
+
+} /* T* getLastElemStack(void) */
 
 /******************************************************************************/
-BOOL
+static BOOL
 isEmptyStack(void)
 {
     /*
@@ -129,10 +134,11 @@ isEmptyStack(void)
     */
 
     return tab[0] ? false : true;
-}
+
+} /* BOOL isEmptyStack(void) */
 
 /******************************************************************************/
-BOOL
+static BOOL
 isFullStack(void)
 {
     /*
@@ -143,7 +149,7 @@ isFullStack(void)
 
     return tab[nbMaxElems-1] ? true : false;
 
-}
+} /* BOOL isFullStack(void) */
 
 /******************************************************************************/
 void
@@ -183,4 +189,5 @@ setTemplate(const char* string)
 
     else
         MYERROR("wrong template in setTemplate");
-}
+
+} /* void setTemplate(const char* string) */

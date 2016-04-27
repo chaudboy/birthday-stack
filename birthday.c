@@ -647,20 +647,14 @@ deleteBirthday(void)
     if( !isEmptyBirthdayList() )
     {
         BOOL found = false;
-        BIRTHDAY input;
+        BIRTHDAY input*;
 
-        strcpy(input.nom, "jamaigne");
-        strcpy(input.prenom, "lionel");
-        input.mois = input.jours = 1;
-        input.annee = 2000;
+        setBirthday(input);
 
         BIRTHDAY* temp = first;
 
         setTemplate("birthday");
         createStack(nbCurBirthdays);
-
-        //printBirthday(first);
-        //printBirthday(&input);
 
         do
         {
@@ -712,7 +706,7 @@ deleteBirthday(void)
                 }
             }
 
-            removeBirthdayFromIndex();
+            removeBirthdayFromIndex(input);
             printf("Anniversaire supprime");
         }
 
