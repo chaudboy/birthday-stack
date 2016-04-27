@@ -1,7 +1,7 @@
 /*
     Author: Lionel Jamaigne
     Creation Date: 26/02/2016
-    Last Modified: 26/04/2016
+    Last Modified: 27/04/2016
     Last Modification:
     Known Issues:
     Version: 1.0
@@ -13,13 +13,14 @@
 int nbCurBirthdays = 0;
 int lastDayCheckForSoonBirthdays = 0;
 
-bool checkForSoonBirthdayToday = false;
+BOOL checkForSoonBirthdayToday = false;
 
 BIRTHDAY* first = NULL;
 BIRTHDAY* indexBirthday[12];
 
 /******************************************************************************/
-bool
+static
+BOOL
 compBirthdays(const BIRTHDAY* first, const BIRTHDAY* second)
 {
     /*
@@ -37,9 +38,10 @@ compBirthdays(const BIRTHDAY* first, const BIRTHDAY* second)
 
     return false;
 
-} /* bool compBirthdays(const BIRTHDAY* first, const BIRTHDAY* second) */
+} /* BOOL compBirthdays(const BIRTHDAY* first, const BIRTHDAY* second) */
 
 /******************************************************************************/
+static
 void
 addBirthdayToIndex(const BIRTHDAY* addedBirthday)
 {
@@ -78,7 +80,7 @@ setIndexBirthdays(void)
 } /* void setIndexBirthdays(void) */
 
 /******************************************************************************/
-void
+static void
 sortBirthdays(const BIRTHDAY* birthdayToAdd)
 {
     /*
@@ -96,7 +98,7 @@ sortBirthdays(const BIRTHDAY* birthdayToAdd)
 
         BIRTHDAY* temp = first;
 
-        bool flag = false;
+        BOOL flag = false;
         int i = 0;
 
         setTemplate("birthday");
@@ -150,18 +152,18 @@ sortBirthdays(const BIRTHDAY* birthdayToAdd)
 } /* void sortBirthdays(const BIRTHDAY* birthdayToAdd) */
 
 /******************************************************************************/
-bool
+BOOL
 isEmptyBirthdayList(void)
 {
     /*
         Input:  none
         Core:   says wheter there is at least 1 struct in memory
-        Output: a bool variable that is true if it's empty
+        Output: a BOOL variable that is true if it's empty
     */
 
     return first ? false : true;
 
-} /* bool isEmptyBirthdayList(void) */
+} /* BOOL isEmptyBirthdayList(void) */
 
 /******************************************************************************/
 void
@@ -170,12 +172,12 @@ setBirthday(BIRTHDAY* ajout)
     /*
         Input:  the address of a BIRTHDAY struct
         Core:   completes a BIRTHDAY struct
-        Output: none
+        Output:
     */
 
     char temp[20] = "";
     int entier = 0;
-    bool ret = false;
+    BOOL ret = false;
 
     ajout = (BIRTHDAY*)malloc(sizeof(BIRTHDAY));
 
@@ -236,7 +238,7 @@ setBirthday(BIRTHDAY* ajout)
 } /* void setBirthday(BIRTHDAY* ajout) */
 
 /******************************************************************************/
-void
+static void
 addBirthday(BIRTHDAY *ajout)
 {
     /*
@@ -522,7 +524,7 @@ getNextBirthday(void)
     */
 
     int i = nbCurBirthdays;
-    bool found = false;
+    BOOL found = false;
     BIRTHDAY* temp = first;
 
     struct tm* today = getDate();
@@ -644,7 +646,7 @@ deleteBirthday(void)
 
     if( !isEmptyBirthdayList() )
     {
-        bool found = false;
+        BOOL found = false;
         BIRTHDAY input;
 
         strcpy(input.nom, "jamaigne");
@@ -710,6 +712,7 @@ deleteBirthday(void)
                 }
             }
 
+            removeBirthdayFromIndex();
             printf("Anniversaire supprime");
         }
 
@@ -722,7 +725,7 @@ deleteBirthday(void)
 } /* BIRTHDAY* deleteBirthday(void) */
 
 /******************************************************************************/
-void
+static void
 removeBirthdayFromIndex(const BIRTHDAY* birthday)
 {
     /*
@@ -737,7 +740,7 @@ removeBirthdayFromIndex(const BIRTHDAY* birthday)
 } /* void removeBirthdayFromIndex(const BIRTHDAY* birthday) */
 
 /******************************************************************************/
-bool
+BOOL
 isBirthdayEqual(const BIRTHDAY* b1, const BIRTHDAY* b2)
 {
     /*
@@ -748,10 +751,10 @@ isBirthdayEqual(const BIRTHDAY* b1, const BIRTHDAY* b2)
 
     return true == ( b1->jours == b2->jours && b1->mois == b2->mois && b1->annee == b2->annee && strcmp(b1->nom, b2->nom) == 0 && strcmp(b1->prenom, b2->prenom) == 0 );
 
-} /*bool isBirthdayEqual(const BIRTHDAY* b1, const BIRTHDAY* b2) */
+} /*BOOL isBirthdayEqual(const BIRTHDAY* b1, const BIRTHDAY* b2) */
 
 /******************************************************************************/
-void
+BIRTHDAY_EVENT*
 checkIfBirthdaySoon(void)
 {
     /*
@@ -769,10 +772,14 @@ checkIfBirthdaySoon(void)
             BIRTHDAY* nextBirthday = getNextBirthday();
 
             int nbJours = getDaysBeforeBirthday(nextBirthday);
-
             if( nbJours <= 7 )
+
             {
-                switch(nbJours)
+                BIRTHDAY_EVENT nextBirthdayEvent;
+                nextBirthdayEvent.birthday = nextBirthday;
+                nextBirthdayEvent.ETA = nbJours;
+
+                /*switch(nbJours)
                 {
                     case 1: printf("Demain %s %s fetera son anniversaire & aura %d ans !", nextBirthday->prenom,
                                                                                          nextBirthday->nom,
@@ -789,7 +796,7 @@ checkIfBirthdaySoon(void)
                                                                                                  nextBirthday->nom,
                                                                                                  getAge(nextBirthday)+1);
                         break;
-                }
+                }*/
             }
 
             checkForSoonBirthdayToday = true;
@@ -798,6 +805,8 @@ checkIfBirthdaySoon(void)
 
         else if( checkForSoonBirthdayToday && currentDate->tm_mday != lastDayCheckForSoonBirthdays )
             checkForSoonBirthdayToday = false;
+
+        return nextBirthdayEvent;
     }
 
-} /* void checkIfBirthdaySoon(void) */
+} /* BIRTHDAY_EVENT checkIfBirthdaySoon(void) */

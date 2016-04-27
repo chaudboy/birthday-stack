@@ -1,7 +1,7 @@
 /*
     Author: Lionel Jamaigne
     Creation Date: 26/02/2016
-    Last Modified: 12/04/2016
+    Last Modified: 27/04/2016
     Last Modification:
     Known Issues:
     Version: 1.0
@@ -9,14 +9,20 @@
 
 #include "stack.h"
 
-int nbMaxElems = 0;
-int nbCurElems = 0;
+static int nbMaxElems = 0;
+static int nbCurElems = 0;
 
-T** tab = NULL;
+static T** tab = NULL;
 
 T**
 createStack(const int nbElems)
 {
+    /*
+        Input:
+        Core:
+        Output:
+    */
+
     nbMaxElems = nbElems;
     tab = (T**)malloc(sizeof(T*)*nbElems);
 
@@ -39,9 +45,16 @@ createStack(const int nbElems)
     return tab;
 }
 
+/******************************************************************************/
 void
 pushStack(T* elem)
 {
+    /*
+        Input:
+        Core:
+        Output:
+    */
+
     if( !isFullStack() )
     {
         tab[nbCurElems] = elem;
@@ -53,9 +66,16 @@ pushStack(T* elem)
         MYERROR("The stack is currently full");
 }
 
+/******************************************************************************/
 T*
 popStack(void)
 {
+    /*
+        Input:
+        Core:
+        Output:
+    */
+
     if( !isEmptyStack() )
     {
         T* temp = tab[nbCurElems-1];
@@ -70,35 +90,71 @@ popStack(void)
     return NULL;
 }
 
-void freeStack(void)
+/******************************************************************************/
+void
+freeStack(void)
 {
+    /*
+        Input:
+        Core:
+        Output:
+    */
+
     nbCurElems = nbMaxElems = 0;
     free(tab);
     tab = NULL;
 }
 
+/******************************************************************************/
 T*
 getLastElemStack(void)
 {
+    /*
+        Input:
+        Core:
+        Output:
+    */
+
     return tab[nbCurElems-1];
 }
 
-bool
+/******************************************************************************/
+BOOL
 isEmptyStack(void)
 {
+    /*
+        Input:
+        Core:
+        Output:
+    */
+
     return tab[0] ? false : true;
 }
 
-bool
+/******************************************************************************/
+BOOL
 isFullStack(void)
 {
+    /*
+        Input:
+        Core:
+        Output:
+    */
+
     return tab[nbMaxElems-1] ? true : false;
-    //return true == (nbCurElems == nbMaxElems);
+
 }
 
+/******************************************************************************/
 void
 setTemplate(const char* string)
 {
+    /*
+        Input:
+        Core:
+        Output:
+    */
+
     if( strcmp("int", string) == 0 )
     {
         typedef int T;

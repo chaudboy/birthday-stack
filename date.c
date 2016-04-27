@@ -1,15 +1,41 @@
 /*
     Author: Lionel Jamaigne
     Creation Date: 08/04/2016
-    Last Modified: 13/04/2016
+    Last Modified: 27/04/2016
     Last Modification:
     Known issues:
     Version: 1.0
 */
 
+#define JANVIER 1
+#define FEVRIER 2
+#define MARS 3
+#define AVRIL 4
+#define MAI 5
+#define JUIN 6
+#define JUILLET 7
+#define AOUT 8
+#define SEPTEMBRE 9
+#define OCTOBRE 10
+#define NOVEMBRE 11
+#define DECEMBRE 12
+
+daysPerMonth[0] = 31;
+daysPerMonth[1] = 28;
+daysPerMonth[2] = 31;
+daysPerMonth[3] = 30;
+daysPerMonth[4] = 31;
+daysPerMonth[5] = 30;
+daysPerMonth[6] = 31;
+daysPerMonth[7] = 31;
+daysPerMonth[8] = 30;
+daysPerMonth[9] = 31;
+daysPerMonth[10] = 30;
+daysPerMonth[11] = 31;
+
 #include "date.h"
 
-bool
+BOOL
 isYearBissextile(int year)
 {
     /*
@@ -19,8 +45,10 @@ isYearBissextile(int year)
     */
 
     return true == ( ( year % 4 == 0 && year % 100 != 0 ) || year % 100 == 0 );
-}
 
+} /* BOOL isYearBissextile(int year) */
+
+/******************************************************************************/
 void
 setBissextile(void)
 {
@@ -32,31 +60,22 @@ setBissextile(void)
 
     struct tm* today = getDate();
 
-    daysPerMonth[0] = 31;
-    daysPerMonth[2] = 31;
-    daysPerMonth[3] = 30;
-    daysPerMonth[4] = 31;
-    daysPerMonth[5] = 30;
-    daysPerMonth[6] = 31;
-    daysPerMonth[7] = 31;
-    daysPerMonth[8] = 30;
-    daysPerMonth[9] = 31;
-    daysPerMonth[10] = 30;
-    daysPerMonth[11] = 31;
+
 
     if( isYearBissextile(today->tm_year) )
     {
-        daysPerMonth[1] = 29;
+        daysPerMonth[FEVRIER-1] = 29;
         daysThisYear = 366;
     }
 
     else
     {
-        daysPerMonth[1] = 28;
+        daysPerMonth[FEVRIER-1] = 28;
         daysThisYear = 365;
     }
 }
 
+/******************************************************************************/
 struct tm*
 getDate(void)
 {
@@ -75,6 +94,7 @@ getDate(void)
     return local;
 }
 
+/******************************************************************************/
 int
 monthToNumber(const char* mois)
 {
@@ -92,7 +112,7 @@ monthToNumber(const char* mois)
     else if( strcmp("Fevrier", mois) == 0 )
         ret = 2;
 
-     else if( strcmp("Mars", mois) == 0 )
+    else if( strcmp("Mars", mois) == 0 )
         ret = 3;
 
     else if( strcmp("Avril", mois) == 0 )
@@ -125,6 +145,7 @@ monthToNumber(const char* mois)
     return ret;
 }
 
+/******************************************************************************/
 int
 getCurrentYear(void)
 {

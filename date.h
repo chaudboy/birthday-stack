@@ -16,7 +16,7 @@
 int daysThisYear;
 int daysPerMonth[12];
 
-bool isYearBissextile(int year);
+BOOL isYearBissextile(int year);
 void setBissextile(void);
 
 int monthToNumber(const char* mois);

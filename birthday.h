@@ -1,7 +1,7 @@
 /*
     Author: Lionel Jamaigne
     Creation Date: 10/03/2016
-    Last Modified: 14/04/2016
+    Last Modified: 27/04/2016
     Last Modification:
     Known Issues:
     Version: 1.0
@@ -24,28 +24,36 @@ typedef struct Birthday
     struct Birthday *psuiv;
 } BIRTHDAY;
 
+typedef struct BirthdayEvent
+{
+    BIRTHDAY* birthday;
+    int ETA;
+} BIRTHDAY_EVENT;
+
+static void addBirthdayToIndex(const BIRTHDAY* addedBirthday);
+static void removeBirthdayFromIndex(const BIRTHDAY* birthday);
+static void sortBirthdays(const BIRTHDAY* new);
+static BOOL compBirthdays(const BIRTHDAY* first, const BIRTHDAY* second);
+
 void printBirthdays(void);
 void printBirthday(const BIRTHDAY* temp);
-void addBirthdayToIndex(const BIRTHDAY* addedBirthday);
-void removeBirthdayFromIndex(const BIRTHDAY* birthday);
 void setIndexBirthdays(void);
-void sortBirthdays(const BIRTHDAY* new);
 void loadBirthdays(void);
 void saveBirthdays(void);
 void setBirthday(BIRTHDAY* ajout);
 void addBirthday(BIRTHDAY* ajout);
 void cleanBirthdays(void);
 void printNextBirthday(void);
-void checkIfBirthdaySoon(void);
 
 int getAge(const BIRTHDAY* person);
 int getDaysBeforeBirthday(const BIRTHDAY* birthday);
 
-bool isEmptyBirthdayList(void);
-bool compBirthdays(const BIRTHDAY* first, const BIRTHDAY* second);
-bool isBirthdayEqual(const BIRTHDAY* b1, const BIRTHDAY* b2);
+BOOL isEmptyBirthdayList(void);
+BOOL isBirthdayEqual(const BIRTHDAY* b1, const BIRTHDAY* b2);
 
 BIRTHDAY* getNextBirthday(void);
 BIRTHDAY* deleteBirthday(void);
+
+BIRTHDAY_EVENT checkIfBirthdaySoon(void);
 
 #endif

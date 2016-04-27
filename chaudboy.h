@@ -1,7 +1,7 @@
 /*
     Author: Lionel Jamaigne
     Creation Date: 26/02/2016
-    Last Modified: 13/04/2016
+    Last Modified: 27/04/2016
     Last Modification:
     Known Issues: none
     Version: 1.0
@@ -17,6 +17,8 @@
 #if defined(unix) || defined(__unix__) || defined(__APPLE__) || defined(__linux__)
     #include <unistd.h>   //_getch & pressKeyToContinue //
     #include <termios.h>  //_getch & pressKeyToContinue //
+#elif defined(_WIN32) || defined(_WIN64)
+    #include <windows.h>
 #endif
 
 #define USEDEBUG
@@ -25,8 +27,8 @@
 #define DEBUG(s) fputs( ANSI_COLOR_BOLD ANSI_COLOR_YELLOW s ANSI_COLOR_RESET, stderr)
 #endif
 
-#define true 1
-#define false 0
+#define TRUE 1
+#define FALSE 0
 
 #define ANSI_COLOR_RED        "\x1b[31m" // UNIX
 #define ANSI_COLOR_GREEN      "\x1b[32m" // UNIX
@@ -44,7 +46,7 @@
 
 #define MYERROR(s) fputs( ANSI_COLOR_RED ANSI_COLOR_BOLD s ANSI_COLOR_RESET, stderr)
 
-typedef int bool;
+typedef int BOOL;
 
 void cleanString(char* temp);
 void clearScreen(void);
@@ -59,7 +61,7 @@ void setInputPassword(const char* message, char* string, const int maxChar, cons
 void loadLogin(const char* fileName);
 void createUsersFile(const char* fileName);
 
-bool checkIntBondaries(const int number, const int min, const int max);
+BOOL checkIntBondaries(const int number, const int min, const int max);
 
 char getchUnix(void);
 

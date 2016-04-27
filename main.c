@@ -1,7 +1,7 @@
 /*
     Author: Lionel Jamaigne
     Creation Date: ?
-    Last Modified: 13/04/2016
+    Last Modified: 27/04/2016
     Last Modification:
     Known Issues:
     Version: 1.0
@@ -19,44 +19,16 @@
 
 #define USERSFILE "usersFile.dat"
 
-#define DUMP(s, i, buf, sz)  {printf(s);                   \
-                              for (i = 0; i < (sz);i++)    \
-                                  printf("%c", buf[i]); \
-                              printf("\n");}
-
 void checkArgument(const int argc, const char *argv[]);
 
 int
 main(int argc, char *argv[])
 {
-    BIRTHDAY *ajout;
+    BIRTHDAY *ajout = NULL;
     int choice = 0;
     char temp[3] = "";
 
-    printf("bloc de test aes256");
-    {
-        aes256_context ctx;
-        uint8_t key[32];
-        uint8_t buf[16], i;
-
-        for (i = 0; i < sizeof(key);i++) key[i] = i;
-
-        strcpy(buf, "plaintexttoencrypt");
-
-        DUMP("txt: ", i, buf, sizeof(buf));
-        DUMP("key: ", i, key, sizeof(key));
-
-
-        aes256_encrypt_ecb(&ctx, buf);
-        aes256_decrypt_ecb(&ctx, buf);
-        DUMP("dec: ", i, buf, sizeof(buf));
-
-        aes256_done(&ctx);
-
-    }
-
-
-    //clearScreen();
+    clearScreen();
 
     createUsersFile(USERSFILE);
 
@@ -66,8 +38,6 @@ main(int argc, char *argv[])
 
     do
     {
-        checkIfBirthdaySoon();
-
         printf("\t\n1. Encoder un nouvel anniversaire");
         printf("\t\n2. Afficher les anniversaires");
         printf("\t\n3. Charger un fichier d'anniversaires");
@@ -86,7 +56,7 @@ main(int argc, char *argv[])
         switch(choice)
         {
             case 1: setBirthday(ajout);
-                    checkIfBirthdaySoon();
+                    addBirthday(ajout);
                 break;
 
             case 2: printBirthdays();
@@ -124,6 +94,7 @@ main(int argc, char *argv[])
     return EXIT_SUCCESS;
 }
 
+/******************************************************************************/
 void
 checkArgument(const int argc, const char *argv[])
 {
@@ -150,4 +121,5 @@ checkArgument(const int argc, const char *argv[])
 
         }while( i+1 < argc );
     }
-}
+
+} /* void checkArgument(const int argc, const char *argv[]) */

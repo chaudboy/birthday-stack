@@ -1,7 +1,7 @@
 /*
     Author: Lionel Jamaigne
     Creation Date: 10/03/2016
-    Last Modified: 15/03/2016
+    Last Modified: 27/04/2016
     Last Modification:
     Known Issues:
     Version: 1.0
@@ -26,7 +26,7 @@ void pushStack(T* elem);
 void setTemplate(const char* string);
 void freeStack(void);
 
-bool isFullStack(void);
-bool isEmptyStack(void);
+static BOOL isFullStack(void);
+static BOOL isEmptyStack(void);
 
 #endif

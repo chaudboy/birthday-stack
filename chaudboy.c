@@ -1,7 +1,7 @@
 /*
     Author: Lionel Jamaigne
     Creation Date: 14/03/2016
-    Last Modified: 13/04/2016
+    Last Modified: 27/04/2016
     Last Modification:
     Known Issues:
     Version: 1.0
@@ -9,7 +9,7 @@
 
 #include "chaudboy.h"
 
-bool
+BOOL
 checkIntBondaries(const int number, const int min, const int max)
 {
     /*
@@ -18,7 +18,7 @@ checkIntBondaries(const int number, const int min, const int max)
         Output:
     */
 
-    bool ret;
+    BOOL ret;
 
     if( number < min || number > max )
         ret = false;
@@ -27,8 +27,10 @@ checkIntBondaries(const int number, const int min, const int max)
         ret = true;
 
     return ret;
-}
 
+} /* BOOL checkIntBondaries(const int number, const int min, const int max) */
+
+/******************************************************************************/
 void
 printCharValue(const char* string)
 {
@@ -43,9 +45,9 @@ printCharValue(const char* string)
         printf("%d %c ", string[i], string[i]);
     }
 
-    //printf("\n");
-}
+} /* void printCharValue(const char* string) */
 
+/******************************************************************************/
 void
 cleanString(char* temp)
 {
@@ -57,8 +59,10 @@ cleanString(char* temp)
 
     if( temp[strlen(temp)-1] = '\n' )
         temp[strlen(temp)-1] = '\0';
-}
 
+} /* void cleanString(char* temp) */
+
+/******************************************************************************/
 void
 pressKeyToContinue(void)
 {
@@ -84,8 +88,10 @@ pressKeyToContinue(void)
     tcsetattr(0,TCSADRAIN,&argout);
     read(0, &ch, 1);
     tcsetattr(0,TCSADRAIN,&argin);
-}
 
+} /* void pressKeyToContinue(void) */
+
+/******************************************************************************/
 void
 pressEnterToContinue(void)
 {
@@ -100,8 +106,10 @@ pressEnterToContinue(void)
     printf("\nPress enter to continue ..");
 
     while( (temp = getchar()) != '\n' );
-}
 
+} /* void pressEnterToContinue(void) */
+
+/******************************************************************************/
 void
 printAllANSIColors(void)
 {
@@ -121,8 +129,10 @@ printAllANSIColors(void)
     printf(ANSI_COLOR_UNDERLINED "UNDERLINED\n" ANSI_COLOR_RESET);
     printf(ANSI_COLOR_CYAN ANSI_COLOR_BACKGROUND "BACKGROUND\n" ANSI_COLOR_RESET);
     printf(ANSI_COLOR_GREY "GREY" ANSI_COLOR_RESET);
-}
 
+} /* void printAllANSIColors(void) */
+
+/******************************************************************************/
 void
 clearScreen(void)
 {
@@ -136,7 +146,6 @@ clearScreen(void)
         printf("\033[H\033[J");
 
     #elif defined(_WIN32) || defined(_WIN64)
-        #include <windows.h>
         HANDLE                     hStdOut;
         CONSOLE_SCREEN_BUFFER_INFO csbi;
         DWORD                      count;
@@ -166,8 +175,10 @@ clearScreen(void)
         SetConsoleCursorPosition( hStdOut, homeCoords );
 
     #endif
-}
 
+} /* void clearScreen(void) */
+
+/******************************************************************************/
 void
 setInputString(const char* message, char* string, const int maxChar)
 {
@@ -181,8 +192,10 @@ setInputString(const char* message, char* string, const int maxChar)
 
     fgets(string, maxChar+2, stdin);
     cleanString(string);
-}
 
+} /* void setInputString(const char* message, char* string, const int maxChar) */
+
+/******************************************************************************/
 void
 setInputNumber(const char* message, int* number, const int maxChar, const int min, const int max)
 {
@@ -210,8 +223,10 @@ setInputNumber(const char* message, int* number, const int maxChar, const int mi
     }while( flag == true );
 
     cleanString(temp);
-}
 
+} /* void setInputNumber(const char* message, int* number, const int maxChar, const int min, const int max) */
+
+/******************************************************************************/
 void
 setInputPassword(const char* message, char* string, const int maxChar, const char charToDisplay)
 {
@@ -238,8 +253,10 @@ setInputPassword(const char* message, char* string, const int maxChar, const cha
 
     cleanString(input);
     strcpy(string, input);
-}
 
+} /* void setInputPassword(const char* message, char* string, const int maxChar, const char charToDisplay) */
+
+/******************************************************************************/
 void
 printAllASCIIChars(void)
 {
@@ -253,8 +270,10 @@ printAllASCIIChars(void)
     {
         printf("Dec %d - Hexa %x - Char %c\n", i, i, i);
     }
-}
 
+} /* void printAllASCIIChars(void) */
+
+/******************************************************************************/
 void
 loadLogin(const char* fileName)
 {
@@ -290,8 +309,10 @@ loadLogin(const char* fileName)
         else
             clearScreen();
     }
-}
 
+} /* void loadLogin(const char* fileName) */
+
+/******************************************************************************/
 void
 createUsersFile(const char* fileName)
 {
@@ -318,11 +339,19 @@ createUsersFile(const char* fileName)
         perror("fopen() error in createUsersFile()");
 
     fclose(usersFile);
-}
 
+} /* void createUsersFile(const char* fileName) */
+
+/******************************************************************************/
 char
 getchUnix(void)
 {
+    /*
+        Input:
+        Core:
+        Output:
+    */
+
     char buf=0;
     struct termios old={0};
 
@@ -344,4 +373,5 @@ getchUnix(void)
     //printf("%c\n",buf);
 
     return buf;
-}
+
+} /* char getchUnix(void) */
