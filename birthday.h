@@ -7,53 +7,53 @@
     Version: 1.0
 */
 
-#ifndef BIRTHDAY_H
-#define BIRTHDAY_H
+#ifndef PERSON_H
+#define PERSON_H
 
 #include "chaudboy.h"
 #include "date.h"
 #include <time.h>
 
-typedef struct Birthday
+typedef struct Person
 {
     char prenom[15];
     char nom[15];
     int jours;
     int mois;
     int annee;
-    struct Birthday *psuiv;
+    struct Person *psuiv;
+} PERSON;
+
+typedef struct Birthday
+{
+    PERSON* birthday;
+    int ETA;
 } BIRTHDAY;
 
-typedef struct BirthdayEvent
-{
-    BIRTHDAY* birthday;
-    int ETA;
-} BIRTHDAY_EVENT;
-
-static void addBirthdayToIndex(const BIRTHDAY* addedBirthday);
-static void removeBirthdayFromIndex(const BIRTHDAY* birthday);
-static void sortBirthdays(const BIRTHDAY* new);
-static BOOL compBirthdays(const BIRTHDAY* first, const BIRTHDAY* second);
+static void addBirthdayToIndex(const PERSON* addedBirthday);
+static void removeBirthdayFromIndex(const PERSON* birthday);
+static void sortBirthdays(const PERSON* new);
+static BOOL compBirthdays(const PERSON* first, const PERSON* second);
 
 void printBirthdays(void);
-void printBirthday(const BIRTHDAY* temp);
+void printBirthday(const PERSON* temp);
 void setIndexBirthdays(void);
 void loadBirthdays(void);
 void saveBirthdays(void);
-void setBirthday(BIRTHDAY* ajout);
-void addBirthday(BIRTHDAY* ajout);
+void setBirthday(PERSON* ajout);
+void addBirthday(PERSON* ajout);
 void cleanBirthdays(void);
 void printNextBirthday(void);
 
-int getAge(const BIRTHDAY* person);
-int getDaysBeforeBirthday(const BIRTHDAY* birthday);
+int getAge(const PERSON* person);
+int getDaysBeforeBirthday(const PERSON* birthday);
 
 BOOL isEmptyBirthdayList(void);
-BOOL isBirthdayEqual(const BIRTHDAY* b1, const BIRTHDAY* b2);
+BOOL isBirthdayEqual(const PERSON* b1, const PERSON* b2);
 
-BIRTHDAY* getNextBirthday(void);
-BIRTHDAY* deleteBirthday(void);
+PERSON* getNextBirthday(void);
+PERSON* deleteBirthday(void);
 
-BIRTHDAY_EVENT checkIfBirthdaySoon(void);
+BIRTHDAY checkIfBirthdaySoon(void);
 
 #endif

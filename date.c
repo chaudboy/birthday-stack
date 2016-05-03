@@ -1,7 +1,7 @@
 /*
     Author: Lionel Jamaigne
     Creation Date: 08/04/2016
-    Last Modified: 27/04/2016
+    Last Modified: 3/05/2016
     Last Modification:
     Known issues:
     Version: 1.0
@@ -36,7 +36,7 @@ daysPerMonth[11] = 31;
 #include "date.h"
 
 BOOL
-isYearBissextile(int year)
+is_year_bissextile(int year)
 {
     /*
         Input:
@@ -50,7 +50,7 @@ isYearBissextile(int year)
 
 /******************************************************************************/
 void
-setBissextile(void)
+set_days_bissextile(void)
 {
     /*
         Input:
@@ -58,11 +58,9 @@ setBissextile(void)
         Output:
     */
 
-    struct tm* today = getDate();
+    struct tm* today = get_date();
 
-
-
-    if( isYearBissextile(today->tm_year) )
+    if( is_year_bissextile(today->tm_year) )
     {
         daysPerMonth[FEVRIER-1] = 29;
         daysThisYear = 366;
@@ -76,8 +74,8 @@ setBissextile(void)
 }
 
 /******************************************************************************/
-struct tm*
-getDate(void)
+DATE
+get_date(void)
 {
     /*
         Input:
@@ -87,16 +85,19 @@ getDate(void)
 
     time_t now = time(0);
   	struct tm* local = localtime(&now);
+    DATE today;
 
-  	local->tm_year += 1900;
-    local->tm_mon += 1;
+    today.day = local->tm_mday;
+    today.month = local.tm_mon + 1;
+  	today.year = local->tm_year + 1900;
 
-    return local;
+
+    return today;
 }
 
 /******************************************************************************/
 int
-monthToNumber(const char* mois)
+month_to_number(const char* mois)
 {
     /*
         Input:  the address of a day of the week
@@ -147,7 +148,7 @@ monthToNumber(const char* mois)
 
 /******************************************************************************/
 int
-getCurrentYear(void)
+get_current_year(void)
 {
     /*
         Input:

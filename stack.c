@@ -1,7 +1,7 @@
 /*
     Author: Lionel Jamaigne
     Creation Date: 26/02/2016
-    Last Modified: 27/04/2016
+    Last Modified: 03/05/2016
     Last Modification:
     Known Issues:
     Version: 1.0
@@ -15,7 +15,7 @@ static int nbCurElems = 0;
 static T** tab = NULL;
 
 T**
-createStack(const int nbElems)
+create_stack(const int nbElems)
 {
     /*
         Input:
@@ -48,7 +48,7 @@ createStack(const int nbElems)
 
 /******************************************************************************/
 void
-pushStack(T* elem)
+push_stack(T* elem)
 {
     /*
         Input:
@@ -56,12 +56,8 @@ pushStack(T* elem)
         Output:
     */
 
-    if( !isFullStack() )
-    {
-        tab[nbCurElems] = elem;
-        nbCurElems++;
-        //DEBUG("push OK pile non pleine\n");
-    }
+    if( !is_full_stack() )
+        tab[nbCurElems++] = elem;
 
     else
         MYERROR("The stack is currently full");
@@ -70,7 +66,7 @@ pushStack(T* elem)
 
 /******************************************************************************/
 T*
-popStack(void)
+pop_stack(void)
 {
     /*
         Input:
@@ -78,7 +74,7 @@ popStack(void)
         Output:
     */
 
-    if( !isEmptyStack() )
+    if( !is_empty_stack() )
     {
         T* temp = tab[nbCurElems-1];
         tab[--nbCurElems] = NULL;
@@ -95,7 +91,7 @@ popStack(void)
 
 /******************************************************************************/
 void
-freeStack(void)
+free_stack(void)
 {
     /*
         Input:
@@ -111,7 +107,7 @@ freeStack(void)
 
 /******************************************************************************/
 T*
-getLastElemStack(void)
+get_last_elem_from_stack(void)
 {
     /*
         Input:
@@ -124,8 +120,8 @@ getLastElemStack(void)
 } /* T* getLastElemStack(void) */
 
 /******************************************************************************/
-static BOOL
-isEmptyStack(void)
+BOOL
+is_empty_stack(void)
 {
     /*
         Input:
@@ -138,8 +134,8 @@ isEmptyStack(void)
 } /* BOOL isEmptyStack(void) */
 
 /******************************************************************************/
-static BOOL
-isFullStack(void)
+BOOL
+is_full_stack(void)
 {
     /*
         Input:
@@ -153,7 +149,7 @@ isFullStack(void)
 
 /******************************************************************************/
 void
-setTemplate(const char* string)
+set_template(const char* string)
 {
     /*
         Input:

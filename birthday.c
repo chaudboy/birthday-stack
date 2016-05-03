@@ -1,7 +1,7 @@
 /*
     Author: Lionel Jamaigne
     Creation Date: 26/02/2016
-    Last Modified: 27/04/2016
+    Last Modified: 03/05/2016
     Last Modification:
     Known Issues:
     Version: 1.0
@@ -15,13 +15,13 @@ int lastDayCheckForSoonBirthdays = 0;
 
 BOOL checkForSoonBirthdayToday = false;
 
-BIRTHDAY* first = NULL;
-BIRTHDAY* indexBirthday[12];
+PERSON* first = NULL;
+PERSON* indexBirthday[12];
 
 /******************************************************************************/
 static
 BOOL
-compBirthdays(const BIRTHDAY* first, const BIRTHDAY* second)
+comp_birthdays(const PERSON* first, const PERSON* second)
 {
     /*
         Input:
@@ -38,12 +38,12 @@ compBirthdays(const BIRTHDAY* first, const BIRTHDAY* second)
 
     return false;
 
-} /* BOOL compBirthdays(const BIRTHDAY* first, const BIRTHDAY* second) */
+} /* BOOL compBirthdays(const PERSON* first, const PERSON* second) */
 
 /******************************************************************************/
 static
 void
-addBirthdayToIndex(const BIRTHDAY* addedBirthday)
+add_birthday_to_index(const PERSON* addedBirthday)
 {
     /*
         Input:
@@ -56,15 +56,15 @@ addBirthdayToIndex(const BIRTHDAY* addedBirthday)
 
     else
     {
-        if( compBirthdays(addedBirthday, indexBirthday[(addedBirthday->mois)]) )
+        if( comp_birthdays(addedBirthday, indexBirthday[(addedBirthday->mois)]) )
             indexBirthday[(addedBirthday->mois)-1] = addedBirthday;
     }
 
-} /* void addBirthdayToIndex(const BIRTHDAY* addedBirthday) */
+} /* void addBirthdayToIndex(const PERSON* addedBirthday) */
 
 /******************************************************************************/
 void
-setIndexBirthdays(void)
+set_index_birthdays(void)
 {
     /*
         Input:
@@ -81,7 +81,7 @@ setIndexBirthdays(void)
 
 /******************************************************************************/
 static void
-sortBirthdays(const BIRTHDAY* birthdayToAdd)
+sort_birthdays(const PERSON* birthdayToAdd)
 {
     /*
         Input:
@@ -89,27 +89,27 @@ sortBirthdays(const BIRTHDAY* birthdayToAdd)
         Output:
     */
 
-    BIRTHDAY* newBirthdayZone = NULL;
-    newBirthdayZone = (BIRTHDAY*)malloc(sizeof(BIRTHDAY));
+    PERSON* newBirthdayZone = NULL;
+    newBirthdayZone = (PERSON*)malloc(sizeof(PERSON));
 
     if( newBirthdayZone )
     {
-        memcpy(newBirthdayZone, birthdayToAdd, sizeof(BIRTHDAY));
+        memcpy(newBirthdayZone, birthdayToAdd, sizeof(PERSON));
 
-        BIRTHDAY* temp = first;
+        PERSON* temp = first;
 
         BOOL flag = false;
         int i = 0;
 
-        setTemplate("birthday");
-        createStack(nbCurBirthdays);
+        set_template("birthday");
+        create_stack(nbCurBirthdays);
         //printf("je viens de creer une pile de %d elements", nbCurBirthdays);
 
-        for(i=0 ; i<nbCurBirthdays && flag != true ; i++ ) // i scan the Dynamic Data Structure until i should be inserted before a BIRTHDAY struct or unless it's the end
+        for(i=0 ; i<nbCurBirthdays && flag != true ; i++ ) // i scan the Dynamic Data Structure until i should be inserted before a PERSON struct or unless it's the end
         {
-            if( compBirthdays(temp, newBirthdayZone) )
+            if( comp_birthdays(temp, newBirthdayZone) )
             {
-                pushStack(temp);
+                push_stack(temp);
 
                 if( temp->psuiv != NULL )
                     temp = temp->psuiv;
@@ -119,10 +119,10 @@ sortBirthdays(const BIRTHDAY* birthdayToAdd)
                 flag = true;
         }
 
-        if( flag == true ) // i ran into a BIRTHDAY struct before which i should be inserted
+        if( flag == true ) // i ran into a PERSON struct before which i should be inserted
         {
 
-            if( --i == 0 ) // i have to be inserted before the first BIRTHDAY struct -> no need to popStack()
+            if( --i == 0 ) // i have to be inserted before the first PERSON struct -> no need to popStack()
             {
                 newBirthdayZone->psuiv = first;
                 first = newBirthdayZone;
@@ -130,7 +130,7 @@ sortBirthdays(const BIRTHDAY* birthdayToAdd)
 
             else
             {
-                BIRTHDAY* lastStackElem = popStack();
+                PERSON* lastStackElem = pop_stack();
                 lastStackElem->psuiv = newBirthdayZone;
                 newBirthdayZone->psuiv = temp;
             }
@@ -142,18 +142,18 @@ sortBirthdays(const BIRTHDAY* birthdayToAdd)
             newBirthdayZone->psuiv = NULL;
         }
 
-        addBirthdayToIndex(newBirthdayZone);
-        freeStack();
+        add_birthday_to_index(newBirthdayZone);
+        free_stack();
     }
 
     else
         MYERROR("malloc error in sortBirthdays");
 
-} /* void sortBirthdays(const BIRTHDAY* birthdayToAdd) */
+} /* void sortBirthdays(const PERSON* birthdayToAdd) */
 
 /******************************************************************************/
 BOOL
-isEmptyBirthdayList(void)
+is_empty_birthday_list(void)
 {
     /*
         Input:  none
@@ -167,11 +167,11 @@ isEmptyBirthdayList(void)
 
 /******************************************************************************/
 void
-setBirthday(BIRTHDAY* ajout)
+set_birthday(PERSON* ajout)
 {
     /*
-        Input:  the address of a BIRTHDAY struct
-        Core:   completes a BIRTHDAY struct
+        Input:  the address of a PERSON struct
+        Core:   completes a PERSON struct
         Output:
     */
 
@@ -179,16 +179,16 @@ setBirthday(BIRTHDAY* ajout)
     int entier = 0;
     BOOL ret = false;
 
-    ajout = (BIRTHDAY*)malloc(sizeof(BIRTHDAY));
+    ajout = (PERSON*)malloc(sizeof(PERSON));
 
     printf("\t\nEntrez un nom: ");
     fgets(temp, 12, stdin);
-    cleanString(temp);
+    clean_string(temp);
     strcpy(ajout->nom, temp);
 
     printf("\t\nEntrez un prenom: ");
     fgets(temp, 12, stdin);
-    cleanString(temp);
+    clean_string(temp);
     strcpy(ajout->prenom, temp);
 
     do
@@ -196,12 +196,12 @@ setBirthday(BIRTHDAY* ajout)
         printf("\t\nEntrez le jour (au format xx): ");
         fgets(temp, 4, stdin);
         entier = atoi(temp);
-        ret = checkIntBondaries(entier, 1, 31);
+        ret = check_int_bondaries(entier, 1, 31);
 
         if( ret == true )
             ajout->jours = entier;
 
-        cleanString(temp);
+        clean_string(temp);
 
     }while( ret != true );
 
@@ -210,12 +210,12 @@ setBirthday(BIRTHDAY* ajout)
         printf("\t\nEntrez le mois (au format xx): ");
         fgets(temp, 4, stdin);
         entier = atoi(temp);
-        ret = checkIntBondaries(entier, 1, 12);
+        ret = check_int_bondaries(entier, 1, 12);
 
         if( ret == true )
             ajout->mois = entier;
 
-        cleanString(temp);
+        clean_string(temp);
 
     }while( ret != true );
 
@@ -224,37 +224,37 @@ setBirthday(BIRTHDAY* ajout)
         printf("\t\nEntrez l'annee (au format xxxx): ");
         fgets(temp, 6, stdin);
         entier = atoi(temp);
-        ret = checkIntBondaries(entier, 1950, getCurrentYear());
+        ret = check_int_bondaries(entier, 1950, get_current_year());
 
         if( ret == true )
             ajout->annee = entier;
 
-        cleanString(temp);
+        clean_string(temp);
 
     }while( ret != true );
 
-} /* void setBirthday(BIRTHDAY* ajout) */
+} /* void setBirthday(PERSON* ajout) */
 
 /******************************************************************************/
 static void
-addBirthday(BIRTHDAY *ajout)
+add_birthday(PERSON *ajout)
 {
     /*
-        Input:  the address of a BIRTHDAY struct
-        Core:   adds a BIRTHDAY struct into the dynamic data structure from the beginning ("first" pointer)
+        Input:  the address of a PERSON struct
+        Core:   adds a PERSON struct into the dynamic data structure from the beginning ("first" pointer)
         Output: none
     */
 
-    if( isEmptyBirthdayList() )
+    if( is_empty_birthday_list() )
     {
-        first = (BIRTHDAY*)malloc(sizeof(BIRTHDAY));
+        first = (PERSON*)malloc(sizeof(PERSON));
 
         if( first )
         {
-            memcpy(first, ajout, sizeof(BIRTHDAY));
+            memcpy(first, ajout, sizeof(PERSON));
             first->psuiv = NULL;
 
-            addBirthdayToIndex(first);
+            add_birthday_to_index(first);
         }
 
         else
@@ -266,26 +266,26 @@ addBirthday(BIRTHDAY *ajout)
 
     else
     {
-        sortBirthdays(ajout);
+        sort_birthdays(ajout);
     }
 
     nbCurBirthdays++;
 
-} /* void addBirthday(BIRTHDAY *ajout) */
+} /* void addBirthday(PERSON *ajout) */
 
 /******************************************************************************/
 void
-printBirthdays(void)
+print_birthdays(void)
 {
     /*
         Input:  none
-        Core:   prints all BIRTHDAY structures attached from the "first" pointer to "last" pointer
+        Core:   prints all PERSON structures attached from the "first" pointer to "last" pointer
         Output: none
     */
 
-    if( !isEmptyBirthdayList() )
+    if( !is_empty_birthday_list() )
     {
-        BIRTHDAY* temp = first;
+        PERSON* temp = first;
 
         while( temp )
         {
@@ -302,31 +302,31 @@ printBirthdays(void)
 
 /******************************************************************************/
 void
-printBirthday(const BIRTHDAY* temp)
+print_birthday(const PERSON* temp)
 {
     /*
-        Input:  a BIRTHDAY structure address
-        Core:   prints a BIRTHDAY structure given in parameter
+        Input:  a PERSON structure address
+        Core:   prints a PERSON structure given in parameter
         Output: none
     */
 
     printf("%s %s est ne le %d/%d/%d et a %d an%c \n",temp->prenom, temp->nom, temp->jours, temp->mois, temp->annee, getAge(temp), getAge(temp) > 1 ? 's' : ' ');
 
-} /* void printBirthday(const BIRTHDAY* temp) */
+} /* void printBirthday(const PERSON* temp) */
 
 /******************************************************************************/
 void
-cleanBirthdays(void)
+clean_birthdays(void)
 {
     /*
         Input:  none
-        Core:   processes to free all the BIRTHDAY structur's data allocated from the upper malloc. From "first" to "last"
+        Core:   processes to free all the PERSON structur's data allocated from the upper malloc. From "first" to "last"
         Output: none
     */
 
-    if( !isEmptyBirthdayList() )
+    if( !is_empty_birthday_list() )
     {
-        BIRTHDAY *temp = first;
+        PERSON *temp = first;
 
         /*do
         {
@@ -370,16 +370,16 @@ cleanBirthdays(void)
 
 /******************************************************************************/
 void
-loadBirthdays(void)
+load_birthdays(void)
 {
     /*
         Input:  none
-        Core:   loads every BIRTHDAY structures stored in the file into memory
+        Core:   loads every PERSON structures stored in the file into memory
         Output: none
     */
 
     if( first )
-        cleanBirthdays();
+        clean_birthdays();
 
     FILE* file = NULL;
 
@@ -400,7 +400,7 @@ loadBirthdays(void)
 
             while( nbBirthdays > i )
             {
-                BIRTHDAY* temp = (BIRTHDAY*)malloc(sizeof(BIRTHDAY));
+                PERSON* temp = (PERSON*)malloc(sizeof(PERSON));
 
                 fread(temp->prenom, sizeof(char)*15, 1, file);
                 fread(temp->nom, sizeof(char)*15, 1, file);
@@ -409,7 +409,7 @@ loadBirthdays(void)
                 fread(&(temp->mois), sizeof(int), 1, file);
                 fread(&(temp->annee), sizeof(int), 1, file);
 
-                addBirthday(temp);
+                add_birthday(temp);
 
                 i++;
             }
@@ -430,15 +430,15 @@ loadBirthdays(void)
 
 /******************************************************************************/
 void
-saveBirthdays(void)
+save_birthdays(void)
 {
     /*
         Input:  none
-        Core:   stores every BIRTHDAY structures on a file
+        Core:   stores every PERSON structures on a file
         Output: none
     */
 
-    if( !isEmptyBirthdayList() )
+    if( !is_empty_birthday_list() )
     {
         FILE* file = NULL;
 
@@ -450,7 +450,7 @@ saveBirthdays(void)
 
             rewind(file);
 
-            BIRTHDAY* temp = first;
+            PERSON* temp = first;
 
             fwrite(&nbCurBirthdays, sizeof(int), 1, file);
 
@@ -480,10 +480,10 @@ saveBirthdays(void)
 
 /******************************************************************************/
 int
-getAge(const BIRTHDAY* person)
+get_age(const PERSON* person)
 {
     /*
-        Input:  the address of a BIRTHDAY structure
+        Input:  the address of a PERSON structure
         Core:   gets the age of a person with the current year
         Output: the year
     */
@@ -509,11 +509,11 @@ getAge(const BIRTHDAY* person)
 
   	return age;
 
-} /* int tAge(const BIRTHDAY* person) */
+} /* int tAge(const PERSON* person) */
 
 /******************************************************************************/
-BIRTHDAY*
-getNextBirthday(void)
+PERSON*
+get_next_birthday(void)
 {
     /*
         Input:
@@ -523,9 +523,9 @@ getNextBirthday(void)
 
     int i = nbCurBirthdays;
     BOOL found = false;
-    BIRTHDAY* temp = first;
+    PERSON* temp = first;
 
-    struct tm* today = getDate();
+    struct tm* today = get_date();
 
     while( !found && i<nbCurBirthdays )
     {
@@ -541,11 +541,11 @@ getNextBirthday(void)
 
     return temp;
 
-} /* BIRTHDAY* getNextBirthday(void) */
+} /* PERSON* getNextBirthday(void) */
 
 /******************************************************************************/
 void
-printNextBirthday(void)
+print_next_birthday(void)
 {
     /*
         Input:
@@ -555,8 +555,8 @@ printNextBirthday(void)
 
     if( first )
     {
-        BIRTHDAY* nextBirthday = getNextBirthday();
-        int age = getAge(nextBirthday);
+        PERSON* nextBirthday = get_next_birthday();
+        int age = get_age(nextBirthday);
         age++;
 
         printf("%s %s est ne le %d/%d/%d et aura %d an(s) dans %d jours\n",nextBirthday->prenom,
@@ -565,7 +565,7 @@ printNextBirthday(void)
                                                                             nextBirthday->mois,
                                                                             nextBirthday->annee,
                                                                             age,
-                                                                            getDaysBeforeBirthday(nextBirthday));
+                                                                            get_days_before_birthday(nextBirthday));
     }
 
     else
@@ -575,7 +575,7 @@ printNextBirthday(void)
 
 /******************************************************************************/
 int
-getDaysBeforeBirthday(const BIRTHDAY* birthday)
+get_days_before_birthday(const PERSON* birthday)
 {
     /*
         Input:
@@ -583,58 +583,54 @@ getDaysBeforeBirthday(const BIRTHDAY* birthday)
         Output:
     */
 
-    struct tm* today = getDate();
+    DATE today = get_date();
     int nbJours = 0;
     int i = 0;
     int diffMois = 0;
 
-    setBissextile();
+    check_if_bissextile();
 
-    if( today->tm_mon > birthday->mois || ( today->tm_mon == birthday->mois && today->tm_mday > birthday->jours ) )
+    if( today.month > birthday.month || ( today.month == birthday->mois && today.day > birthday->jours ) )
     {
-        diffMois = ((birthday->mois)+12) - today->tm_mon;
+        diffMois = ((birthday->mois)+12) - today.month;
     }
 
-    else if( today->tm_mon < birthday->mois )
+    else if( today.month < birthday->mois )
     {
-        diffMois = birthday->mois - today->tm_mon;
+        diffMois = birthday->mois - today.month;
     }
 
     while( diffMois > 1 )
     {
-        nbJours += daysPerMonth[(today->tm_mon)+i];
+        nbJours += daysPerMonth[(today.month)+i];
 
-        if( (today->tm_mon)+i == 11 )
-        {
+        if( (today.month)+i == 11 )
             i = 1;
-        }
 
         else
-        {
             i++;
-        }
 
         diffMois--;
     }
 
     if( diffMois == 1 )
     {
-        nbJours += (daysPerMonth[(today->tm_mon)+i] - today->tm_mday);
+        nbJours += (daysPerMonth[(today.month)+i] - today.day);
         nbJours += (birthday->jours - 1);
     }
 
     else if( diffMois == 0 )
     {
-        nbJours += (birthday->jours - today->tm_mday);
+        nbJours += (birthday->jours - today.day);
     }
 
     return nbJours;
 
-} /* int getDaysBeforeBirthday(const BIRTHDAY* birthday) */
+} /* int getDaysBeforeBirthday(const PERSON* birthday) */
 
 /******************************************************************************/
-BIRTHDAY*
-deleteBirthday(void)
+PERSON*
+delete_birthday(void)
 {
     /*
         Input:
@@ -642,26 +638,26 @@ deleteBirthday(void)
         Output:
     */
 
-    if( !isEmptyBirthdayList() )
+    if( !is_empty_birthday_list() )
     {
         BOOL found = false;
-        BIRTHDAY input*;
+        PERSON input*;
 
-        setBirthday(input);
+        set_birthday(input);
 
-        BIRTHDAY* temp = first;
+        PERSON* temp = first;
 
-        setTemplate("birthday");
-        createStack(nbCurBirthdays);
+        set_template("birthday");
+        create_stack(nbCurBirthdays);
 
         do
         {
-            if( isBirthdayEqual(temp, &input) )
+            if( is_birthday_equal(temp, &input) )
                 found = true;
 
             else
             {
-                pushStack(temp);
+                push_stack(temp);
                 temp = temp->psuiv;
             }
 
@@ -673,9 +669,9 @@ deleteBirthday(void)
 
         else if( found )
         {
-            if( !isEmptyStack() ) // stack not empty so what i found is at least 2nd
+            if( !is_empty_stack() ) // stack not empty so what i found is at least 2nd
             {
-                BIRTHDAY* previous = popStack();
+                PERSON* previous = pop_stack();
 
                 if( temp->psuiv ) // there is something after
                 {
@@ -704,22 +700,23 @@ deleteBirthday(void)
                 }
             }
 
-            removeBirthdayFromIndex(input);
+            remove_birthday_from_index(input);
             printf("Anniversaire supprime");
         }
 
         free(input);
+        free_stack();
         nbCurBirthdays--;
     }
 
     else
         MYERROR("There is not any birthday in memory");
 
-} /* BIRTHDAY* deleteBirthday(void) */
+} /* PERSON* deleteBirthday(void) */
 
 /******************************************************************************/
 static void
-removeBirthdayFromIndex(const BIRTHDAY* birthday)
+remove_birthday_from_index(const PERSON* birthday)
 {
     /*
         Input:
@@ -727,14 +724,14 @@ removeBirthdayFromIndex(const BIRTHDAY* birthday)
         Output:
     */
 
-    if( isBirthdayEqual(birthday, indexBirthday[birthday->mois]) )
+    if( is_birthday_equal(birthday, indexBirthday[birthday->mois]) )
         indexBirthday[birthday->mois] = NULL;
 
-} /* void removeBirthdayFromIndex(const BIRTHDAY* birthday) */
+} /* void removeBirthdayFromIndex(const PERSON* birthday) */
 
 /******************************************************************************/
 BOOL
-isBirthdayEqual(const BIRTHDAY* b1, const BIRTHDAY* b2)
+is_birthday_equal(const PERSON* b1, const PERSON* b2)
 {
     /*
         Input:
@@ -744,11 +741,11 @@ isBirthdayEqual(const BIRTHDAY* b1, const BIRTHDAY* b2)
 
     return true == ( b1->jours == b2->jours && b1->mois == b2->mois && b1->annee == b2->annee && strcmp(b1->nom, b2->nom) == 0 && strcmp(b1->prenom, b2->prenom) == 0 );
 
-} /*BOOL isBirthdayEqual(const BIRTHDAY* b1, const BIRTHDAY* b2) */
+} /*BOOL isBirthdayEqual(const PERSON* b1, const PERSON* b2) */
 
 /******************************************************************************/
-BIRTHDAY_EVENT*
-checkIfBirthdaySoon(void)
+BIRTHDAY*
+check_ff_birthday_soon(void)
 {
     /*
         Input:
@@ -756,19 +753,19 @@ checkIfBirthdaySoon(void)
         Output:
     */
 
-    if( !isEmptyBirthdayList() )
+    if( !is_empty_birthday_list() )
     {
-        struct tm* currentDate = getDate();
+        DATE today = get_date();
 
-        if( !checkForSoonBirthdayToday && currentDate->tm_mday != lastDayCheckForSoonBirthdays )
+        if( !checkForSoonBirthdayToday && today.day != lastDayCheckForSoonBirthdays )
         {
-            BIRTHDAY* nextBirthday = getNextBirthday();
+            PERSON* nextBirthday = get_next_birthday();
 
-            int nbJours = getDaysBeforeBirthday(nextBirthday);
+            int nbJours = get_days_before_birthday(nextBirthday);
+
             if( nbJours <= 7 )
-
             {
-                BIRTHDAY_EVENT nextBirthdayEvent;
+                BIRTHDAY nextBirthdayEvent;
                 nextBirthdayEvent.birthday = nextBirthday;
                 nextBirthdayEvent.ETA = nbJours;
 
@@ -793,13 +790,13 @@ checkIfBirthdaySoon(void)
             }
 
             checkForSoonBirthdayToday = true;
-            lastDayCheckForSoonBirthdays = currentDate->tm_mday;
+            lastDayCheckForSoonBirthdays = today.day;
         }
 
-        else if( checkForSoonBirthdayToday && currentDate->tm_mday != lastDayCheckForSoonBirthdays )
+        else if( checkForSoonBirthdayToday && today.day != lastDayCheckForSoonBirthdays )
             checkForSoonBirthdayToday = false;
 
         return nextBirthdayEvent;
     }
 
-} /* BIRTHDAY_EVENT checkIfBirthdaySoon(void) */
+} /* BIRTHDAY checkIfBirthdaySoon(void) */

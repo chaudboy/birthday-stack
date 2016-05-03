@@ -1,7 +1,7 @@
 /*
     Author: Lionel Jamaigne
     Creation Date: ?
-    Last Modified: 27/04/2016
+    Last Modified: 03/05/2016
     Last Modification:
     Known Issues:
     Version: 1.0
@@ -19,22 +19,22 @@
 
 #define USERSFILE "usersFile.dat"
 
-void checkArgument(const int argc, const char *argv[]);
+void check_argument(const int argc, const char *argv[]);
 
 int
 main(int argc, char *argv[])
 {
-    BIRTHDAY *ajout = NULL;
+    PERSON *ajout = NULL;
     int choice = 0;
     char temp[3] = "";
 
-    clearScreen();
+    clear_screen();
 
-    createUsersFile(USERSFILE);
+    create_users_file(USERSFILE);
 
-    setIndexBirthdays();
+    set_index_birthdays();
 
-    checkArgument(argc, argv);
+    check_argument(argc, argv);
 
     do
     {
@@ -51,31 +51,31 @@ main(int argc, char *argv[])
         fgets(temp, sizeof(temp), stdin);
         choice = atoi(temp);
 
-        cleanString(temp);
+        clean_string(temp);
 
         switch(choice)
         {
-            case 1: setBirthday(ajout);
-                    addBirthday(ajout);
+            case 1: set_birthday(ajout);
+                    add_birthday(ajout);
                     free(ajout);
                 break;
 
-            case 2: printBirthdays();
+            case 2: print_birthdays();
                 break;
 
-            case 3: loadBirthdays();
+            case 3: load_birthdays();
                 break;
 
-            case 4: saveBirthdays();
+            case 4: save_birthdays();
                 break;
 
-            case 5: printNextBirthday();
+            case 5: print_next_birthday();
                 break;
 
-            case 6: cleanBirthdays();
+            case 6: clean_birthdays();
                 break;
 
-            case 7: deleteBirthday();
+            case 7: delete_birthday();
                 break;
 
             default:
@@ -84,20 +84,20 @@ main(int argc, char *argv[])
 
         if( choice != 8 )
         {
-            pressEnterToContinue();
-            clearScreen();
+            press_enter_to_continue();
+            clear_screen();
         }
 
     }while( choice != 8 );
 
-    cleanBirthdays();
+    clean_birthdays();
 
     return EXIT_SUCCESS;
 }
 
 /******************************************************************************/
 void
-checkArgument(const int argc, const char *argv[])
+check_argument(const int argc, const char *argv[])
 {
     /*
         Input:
@@ -112,11 +112,11 @@ checkArgument(const int argc, const char *argv[])
         do
         {
             if( strcmp(argv[i+1], "-lb") == 0 )
-                loadBirthdays();
+                load_birthdays();
 
 
             else if( strcmp(argv[i+1], "-login") == 0 )
-                loadLogin(USERSFILE);
+                load_login(USERSFILE);
 
             i++;
 
