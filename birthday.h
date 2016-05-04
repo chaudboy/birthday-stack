@@ -30,30 +30,30 @@ typedef struct Birthday
     int ETA;
 } BIRTHDAY;
 
-static void addBirthdayToIndex(const PERSON* addedBirthday);
-static void removeBirthdayFromIndex(const PERSON* birthday);
-static void sortBirthdays(const PERSON* new);
-static BOOL compBirthdays(const PERSON* first, const PERSON* second);
+static void add_birthday_to_index(const PERSON* addedBirthday);
+static void remove_birthday_from_index(const PERSON* birthday);
+static void sort_birthdays(const PERSON* new);
+static BOOL comp_birthdays(const PERSON* first, const PERSON* second);
 
-void printBirthdays(void);
-void printBirthday(const PERSON* temp);
-void setIndexBirthdays(void);
-void loadBirthdays(void);
-void saveBirthdays(void);
-void setBirthday(PERSON* ajout);
-void addBirthday(PERSON* ajout);
-void cleanBirthdays(void);
-void printNextBirthday(void);
+void print_birthdays(void);
+void print_birthday(const PERSON* temp);
+void set_index_birthdays(void);
+void load_birthdays(void);
+void save_birthdays(void);
+void set_birthday(PERSON* ajout);
+void add_birthday(PERSON* ajout);
+void clean_birthdays(void);
+void print_next_birthday(void);
 
-int getAge(const PERSON* person);
-int getDaysBeforeBirthday(const PERSON* birthday);
+int get_age(const PERSON* person);
+int get_days_before_birthday(const PERSON* birthday);
 
-BOOL isEmptyBirthdayList(void);
-BOOL isBirthdayEqual(const PERSON* b1, const PERSON* b2);
+BOOL is_empty_birthday_list(void);
+BOOL is_birthday_equal(const PERSON* b1, const PERSON* b2);
 
-PERSON* getNextBirthday(void);
-PERSON* deleteBirthday(void);
+PERSON* get_next_birthday(void);
+PERSON* delete_birthday(void);
 
-BIRTHDAY checkIfBirthdaySoon(void);
+BIRTHDAY* check_if_birthday_soon(void);
 
 #endif

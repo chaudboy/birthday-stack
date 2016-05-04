@@ -1,7 +1,7 @@
 /*
     Author: Lionel Jamaigne
     Creation Date: 14/03/2016
-    Last Modified: 27/04/2016
+    Last Modified: 04/05/2016
     Last Modification:
     Known Issues:
     Version: 1.0
@@ -10,7 +10,7 @@
 #include "chaudboy.h"
 
 BOOL
-checkIntBondaries(const int number, const int min, const int max)
+check_int_bondaries(const int number, const int min, const int max)
 {
     /*
         Input:
@@ -21,10 +21,10 @@ checkIntBondaries(const int number, const int min, const int max)
     BOOL ret;
 
     if( number < min || number > max )
-        ret = false;
+        ret = FALSE;
 
     else
-        ret = true;
+        ret = TRUE;
 
     return ret;
 
@@ -32,7 +32,7 @@ checkIntBondaries(const int number, const int min, const int max)
 
 /******************************************************************************/
 void
-printCharValue(const char* string)
+print_char_value(const char* string)
 {
     /*
         Input:
@@ -49,7 +49,7 @@ printCharValue(const char* string)
 
 /******************************************************************************/
 void
-cleanString(char* temp)
+clean_string(char* temp)
 {
     /*
         Input:  the address of the string from wich to remove the "new line" character
@@ -64,7 +64,7 @@ cleanString(char* temp)
 
 /******************************************************************************/
 void
-pressKeyToContinue(void)
+press_key_to_continue(void)
 {
     /*
         Input:
@@ -72,12 +72,12 @@ pressKeyToContinue(void)
         Output:
     */
 
-    struct  termios argin, argout;
+    //struct  termios argin, argout;
     unsigned char   ch = 0;
 
     printf("Press a key to continue ..");
-    fputs("Press a key to continue", stderr);
 
+    /*
     tcgetattr(0,&argin);
     argout = argin;
     argout.c_lflag &= ~(ICANON);
@@ -87,13 +87,13 @@ pressKeyToContinue(void)
     argout.c_cc[VTIME] = 0;
     tcsetattr(0,TCSADRAIN,&argout);
     read(0, &ch, 1);
-    tcsetattr(0,TCSADRAIN,&argin);
+    tcsetattr(0,TCSADRAIN,&argin);*/
 
 } /* void pressKeyToContinue(void) */
 
 /******************************************************************************/
 void
-pressEnterToContinue(void)
+press_enter_to_continue(void)
 {
     /*
         Input:
@@ -111,7 +111,7 @@ pressEnterToContinue(void)
 
 /******************************************************************************/
 void
-printAllANSIColors(void)
+print_all_ansi_colors(void)
 {
     /*
         Input:
@@ -134,7 +134,7 @@ printAllANSIColors(void)
 
 /******************************************************************************/
 void
-clearScreen(void)
+clear_screen(void)
 {
     /*
         Input:
@@ -180,7 +180,7 @@ clearScreen(void)
 
 /******************************************************************************/
 void
-setInputString(const char* message, char* string, const int maxChar)
+set_input_string(const char* message, char* string, const int maxChar)
 {
     /*
         Input:
@@ -191,13 +191,13 @@ setInputString(const char* message, char* string, const int maxChar)
     printf("%s", message);
 
     fgets(string, maxChar+2, stdin);
-    cleanString(string);
+    clean_string(string);
 
 } /* void setInputString(const char* message, char* string, const int maxChar) */
 
 /******************************************************************************/
 void
-setInputNumber(const char* message, int* number, const int maxChar, const int min, const int max)
+set_input_number(const char* message, int* number, const int maxChar, const int min, const int max)
 {
     /*
         Input:
@@ -205,7 +205,7 @@ setInputNumber(const char* message, int* number, const int maxChar, const int mi
         Output:
     */
 
-    int flag = false;
+    int flag = FALSE;
     char temp[30] = "";
 
     do
@@ -214,21 +214,21 @@ setInputNumber(const char* message, int* number, const int maxChar, const int mi
 
         fgets(temp, maxChar+2, stdin);
 
-        if( checkIntBondaries(atoi(temp), min, max) == false )
-            flag = true;
+        if( check_int_bondaries(atoi(temp), min, max) == FALSE )
+            flag = TRUE;
 
         else
             *number = atoi(temp);
 
-    }while( flag == true );
+    }while( flag == TRUE );
 
-    cleanString(temp);
+    clean_string(temp);
 
 } /* void setInputNumber(const char* message, int* number, const int maxChar, const int min, const int max) */
 
 /******************************************************************************/
 void
-setInputPassword(const char* message, char* string, const int maxChar, const char charToDisplay)
+set_input_password(const char* message, char* string, const int maxChar, const char charToDisplay)
 {
     /*
         Input:
@@ -244,21 +244,21 @@ setInputPassword(const char* message, char* string, const int maxChar, const cha
 
     while( retour != '\n' && i < maxChar && i < 18 )
     {
-        retour = getchUnix();
+        retour = getch_unix();
         input[i] = retour;
         printf("%c", charToDisplay);
 
         i++;
     }
 
-    cleanString(input);
+    clean_string(input);
     strcpy(string, input);
 
 } /* void setInputPassword(const char* message, char* string, const int maxChar, const char charToDisplay) */
 
 /******************************************************************************/
 void
-printAllASCIIChars(void)
+print_all_ascii_chars(void)
 {
     /*
         Input:
@@ -275,7 +275,7 @@ printAllASCIIChars(void)
 
 /******************************************************************************/
 void
-loadLogin(const char* fileName)
+load_login(const char* fileName)
 {
     /*
         Input:
@@ -289,8 +289,8 @@ loadLogin(const char* fileName)
     char loginFile[10] = "";
     char passwordFile[10] = "";
 
-    setInputString("\n\tLogin: ", login, 8);
-    setInputPassword("\n\tPassword: ", password, 8, '*');
+    set_input_string("\n\tLogin: ", login, 8);
+    set_input_password("\n\tPassword: ", password, 8, '*');
 
     FILE* usersFile = NULL;
 
@@ -307,14 +307,14 @@ loadLogin(const char* fileName)
         }
 
         else
-            clearScreen();
+            clear_screen();
     }
 
 } /* void loadLogin(const char* fileName) */
 
 /******************************************************************************/
 void
-createUsersFile(const char* fileName)
+create_users_file(const char* fileName)
 {
     /*
         Input:
@@ -344,7 +344,7 @@ createUsersFile(const char* fileName)
 
 /******************************************************************************/
 char
-getchUnix(void)
+getch_unix(void)
 {
     /*
         Input:
@@ -352,7 +352,7 @@ getchUnix(void)
         Output:
     */
 
-    char buf=0;
+    /*char buf=0;
     struct termios old={0};
 
     fflush(stdout);
@@ -372,6 +372,6 @@ getchUnix(void)
         perror ("tcsetattr ~ICANON");
     //printf("%c\n",buf);
 
-    return buf;
+    return buf;*/
 
 } /* char getchUnix(void) */

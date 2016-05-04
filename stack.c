@@ -129,7 +129,7 @@ is_empty_stack(void)
         Output:
     */
 
-    return tab[0] ? false : true;
+    return tab[0] ? FALSE : TRUE;
 
 } /* BOOL isEmptyStack(void) */
 
@@ -143,7 +143,7 @@ is_full_stack(void)
         Output:
     */
 
-    return tab[nbMaxElems-1] ? true : false;
+    return tab[nbMaxElems-1] ? TRUE : FALSE;
 
 } /* BOOL isFullStack(void) */
 

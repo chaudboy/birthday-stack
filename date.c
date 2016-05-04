@@ -1,11 +1,13 @@
 /*
     Author: Lionel Jamaigne
     Creation Date: 08/04/2016
-    Last Modified: 3/05/2016
+    Last Modified: 04/05/2016
     Last Modification:
     Known issues:
     Version: 1.0
 */
+
+#include "date.h"
 
 #define JANVIER 1
 #define FEVRIER 2
@@ -20,21 +22,6 @@
 #define NOVEMBRE 11
 #define DECEMBRE 12
 
-daysPerMonth[0] = 31;
-daysPerMonth[1] = 28;
-daysPerMonth[2] = 31;
-daysPerMonth[3] = 30;
-daysPerMonth[4] = 31;
-daysPerMonth[5] = 30;
-daysPerMonth[6] = 31;
-daysPerMonth[7] = 31;
-daysPerMonth[8] = 30;
-daysPerMonth[9] = 31;
-daysPerMonth[10] = 30;
-daysPerMonth[11] = 31;
-
-#include "date.h"
-
 BOOL
 is_year_bissextile(int year)
 {
@@ -44,7 +31,7 @@ is_year_bissextile(int year)
         Output:
     */
 
-    return true == ( ( year % 4 == 0 && year % 100 != 0 ) || year % 100 == 0 );
+    return TRUE == ( ( year % 4 == 0 && year % 100 != 0 ) || year % 100 == 0 );
 
 } /* BOOL isYearBissextile(int year) */
 
@@ -58,23 +45,35 @@ set_days_bissextile(void)
         Output:
     */
 
-    struct tm* today = get_date();
+    MY_DATE today = get_date();
 
-    if( is_year_bissextile(today->tm_year) )
+    daysPerMonth[0] = 31;
+    daysPerMonth[2] = 31;
+    daysPerMonth[3] = 30;
+    daysPerMonth[4] = 31;
+    daysPerMonth[5] = 30;
+    daysPerMonth[6] = 31;
+    daysPerMonth[7] = 31;
+    daysPerMonth[8] = 30;
+    daysPerMonth[9] = 31;
+    daysPerMonth[10] = 30;
+    daysPerMonth[11] = 31;
+
+    if( is_year_bissextile(today.year) )
     {
-        daysPerMonth[FEVRIER-1] = 29;
+        daysPerMonth[1] = 29;
         daysThisYear = 366;
     }
 
     else
     {
-        daysPerMonth[FEVRIER-1] = 28;
+        daysPerMonth[1] = 28;
         daysThisYear = 365;
     }
 }
 
 /******************************************************************************/
-DATE
+MY_DATE
 get_date(void)
 {
     /*
@@ -85,10 +84,10 @@ get_date(void)
 
     time_t now = time(0);
   	struct tm* local = localtime(&now);
-    DATE today;
+    MY_DATE today;
 
     today.day = local->tm_mday;
-    today.month = local.tm_mon + 1;
+    today.month = local->tm_mon + 1;
   	today.year = local->tm_year + 1900;
 
 

@@ -9,11 +9,12 @@
 
 #include "birthday.h"
 #include "stack.h"
+#include "date.h"
 
 int nbCurBirthdays = 0;
 int lastDayCheckForSoonBirthdays = 0;
 
-BOOL checkForSoonBirthdayToday = false;
+BOOL checkForSoonBirthdayToday = FALSE;
 
 PERSON* first = NULL;
 PERSON* indexBirthday[12];
@@ -30,13 +31,13 @@ comp_birthdays(const PERSON* first, const PERSON* second)
     */
 
     if( first->mois < second->mois )
-        return true;
+        return TRUE;
 
     if( first->mois == second->mois )
         if( first->jours < second->jours || first->jours == second->jours )
-            return true;
+            return TRUE;
 
-    return false;
+    return FALSE;
 
 } /* BOOL compBirthdays(const PERSON* first, const PERSON* second) */
 
@@ -98,14 +99,14 @@ sort_birthdays(const PERSON* birthdayToAdd)
 
         PERSON* temp = first;
 
-        BOOL flag = false;
+        BOOL flag = FALSE;
         int i = 0;
 
         set_template("birthday");
         create_stack(nbCurBirthdays);
         //printf("je viens de creer une pile de %d elements", nbCurBirthdays);
 
-        for(i=0 ; i<nbCurBirthdays && flag != true ; i++ ) // i scan the Dynamic Data Structure until i should be inserted before a PERSON struct or unless it's the end
+        for(i=0 ; i<nbCurBirthdays && flag != TRUE ; i++ ) // i scan the Dynamic Data Structure until i should be inserted before a PERSON struct or unless it's the end
         {
             if( comp_birthdays(temp, newBirthdayZone) )
             {
@@ -116,10 +117,10 @@ sort_birthdays(const PERSON* birthdayToAdd)
             }
 
             else
-                flag = true;
+                flag = TRUE;
         }
 
-        if( flag == true ) // i ran into a PERSON struct before which i should be inserted
+        if( flag == TRUE ) // i ran into a PERSON struct before which i should be inserted
         {
 
             if( --i == 0 ) // i have to be inserted before the first PERSON struct -> no need to popStack()
@@ -158,10 +159,10 @@ is_empty_birthday_list(void)
     /*
         Input:  none
         Core:   says wheter there is at least 1 struct in memory
-        Output: a BOOL variable that is true if it's empty
+        Output: a BOOL variable that is TRUE if it's empty
     */
 
-    return first ? false : true;
+    return first ? FALSE : TRUE;
 
 } /* BOOL isEmptyBirthdayList(void) */
 
@@ -177,7 +178,7 @@ set_birthday(PERSON* ajout)
 
     char temp[20] = "";
     int entier = 0;
-    BOOL ret = false;
+    BOOL ret = FALSE;
 
     ajout = (PERSON*)malloc(sizeof(PERSON));
 
@@ -198,12 +199,12 @@ set_birthday(PERSON* ajout)
         entier = atoi(temp);
         ret = check_int_bondaries(entier, 1, 31);
 
-        if( ret == true )
+        if( ret == TRUE )
             ajout->jours = entier;
 
         clean_string(temp);
 
-    }while( ret != true );
+    }while( ret != TRUE );
 
     do
     {
@@ -212,12 +213,12 @@ set_birthday(PERSON* ajout)
         entier = atoi(temp);
         ret = check_int_bondaries(entier, 1, 12);
 
-        if( ret == true )
+        if( ret == TRUE )
             ajout->mois = entier;
 
         clean_string(temp);
 
-    }while( ret != true );
+    }while( ret != TRUE );
 
     do
     {
@@ -226,17 +227,17 @@ set_birthday(PERSON* ajout)
         entier = atoi(temp);
         ret = check_int_bondaries(entier, 1950, get_current_year());
 
-        if( ret == true )
+        if( ret == TRUE )
             ajout->annee = entier;
 
         clean_string(temp);
 
-    }while( ret != true );
+    }while( ret != TRUE );
 
 } /* void setBirthday(PERSON* ajout) */
 
 /******************************************************************************/
-static void
+void
 add_birthday(PERSON *ajout)
 {
     /*
@@ -289,7 +290,7 @@ print_birthdays(void)
 
         while( temp )
         {
-            printf("%s %s est ne le %d/%d/%d et a %d an%c \n",temp->prenom, temp->nom, temp->jours, temp->mois, temp->annee, getAge(temp), getAge(temp) > 1 ? 's' : ' ');
+            printf("%s %s est ne le %d/%d/%d et a %d an%c \n",temp->prenom, temp->nom, temp->jours, temp->mois, temp->annee, get_age(temp), get_age(temp) > 1 ? 's' : ' ');
 
             temp = temp->psuiv;
         }
@@ -310,7 +311,7 @@ print_birthday(const PERSON* temp)
         Output: none
     */
 
-    printf("%s %s est ne le %d/%d/%d et a %d an%c \n",temp->prenom, temp->nom, temp->jours, temp->mois, temp->annee, getAge(temp), getAge(temp) > 1 ? 's' : ' ');
+    printf("%s %s est ne le %d/%d/%d et a %d an%c \n",temp->prenom, temp->nom, temp->jours, temp->mois, temp->annee, get_age(temp), get_age(temp) > 1 ? 's' : ' ');
 
 } /* void printBirthday(const PERSON* temp) */
 
@@ -522,17 +523,17 @@ get_next_birthday(void)
     */
 
     int i = nbCurBirthdays;
-    BOOL found = false;
+    BOOL found = FALSE;
     PERSON* temp = first;
 
-    struct tm* today = get_date();
+    MY_DATE today = get_date();
 
     while( !found && i<nbCurBirthdays )
     {
-        if( temp->mois == today->tm_mon )
+        if( temp->mois == today.month )
         {
-            if( today->tm_mday < temp->jours )
-                found = true;
+            if( today.day < temp->jours )
+                found = TRUE;
         }
 
         if( !found && i < nbCurBirthdays )
@@ -583,14 +584,14 @@ get_days_before_birthday(const PERSON* birthday)
         Output:
     */
 
-    DATE today = get_date();
+    MY_DATE today = get_date();
     int nbJours = 0;
     int i = 0;
     int diffMois = 0;
 
-    check_if_bissextile();
+    set_days_bissextile();
 
-    if( today.month > birthday.month || ( today.month == birthday->mois && today.day > birthday->jours ) )
+    if( today.month > birthday->mois || ( today.month == birthday->mois && today.day > birthday->jours ) )
     {
         diffMois = ((birthday->mois)+12) - today.month;
     }
@@ -640,8 +641,8 @@ delete_birthday(void)
 
     if( !is_empty_birthday_list() )
     {
-        BOOL found = false;
-        PERSON input*;
+        BOOL found = FALSE;
+        PERSON *input;
 
         set_birthday(input);
 
@@ -653,7 +654,7 @@ delete_birthday(void)
         do
         {
             if( is_birthday_equal(temp, &input) )
-                found = true;
+                found = TRUE;
 
             else
             {
@@ -739,13 +740,13 @@ is_birthday_equal(const PERSON* b1, const PERSON* b2)
         Output:
     */
 
-    return true == ( b1->jours == b2->jours && b1->mois == b2->mois && b1->annee == b2->annee && strcmp(b1->nom, b2->nom) == 0 && strcmp(b1->prenom, b2->prenom) == 0 );
+    return TRUE == ( b1->jours == b2->jours && b1->mois == b2->mois && b1->annee == b2->annee && strcmp(b1->nom, b2->nom) == 0 && strcmp(b1->prenom, b2->prenom) == 0 );
 
 } /*BOOL isBirthdayEqual(const PERSON* b1, const PERSON* b2) */
 
 /******************************************************************************/
 BIRTHDAY*
-check_ff_birthday_soon(void)
+check_if_birthday_soon(void)
 {
     /*
         Input:
@@ -755,7 +756,8 @@ check_ff_birthday_soon(void)
 
     if( !is_empty_birthday_list() )
     {
-        DATE today = get_date();
+        MY_DATE today = get_date();
+        BIRTHDAY *nextBirthdayEvent;
 
         if( !checkForSoonBirthdayToday && today.day != lastDayCheckForSoonBirthdays )
         {
@@ -765,9 +767,9 @@ check_ff_birthday_soon(void)
 
             if( nbJours <= 7 )
             {
-                BIRTHDAY nextBirthdayEvent;
-                nextBirthdayEvent.birthday = nextBirthday;
-                nextBirthdayEvent.ETA = nbJours;
+
+                nextBirthdayEvent->birthday = nextBirthday;
+                nextBirthdayEvent->ETA = nbJours;
 
                 /*switch(nbJours)
                 {
@@ -789,14 +791,14 @@ check_ff_birthday_soon(void)
                 }*/
             }
 
-            checkForSoonBirthdayToday = true;
+            checkForSoonBirthdayToday = TRUE;
             lastDayCheckForSoonBirthdays = today.day;
         }
 
         else if( checkForSoonBirthdayToday && today.day != lastDayCheckForSoonBirthdays )
-            checkForSoonBirthdayToday = false;
+            checkForSoonBirthdayToday = FALSE;
 
         return nextBirthdayEvent;
     }
 
-} /* BIRTHDAY checkIfBirthdaySoon(void) */
+} /* BIRTHDAY* checkIfBirthdaySoon(void) */

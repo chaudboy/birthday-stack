@@ -48,22 +48,22 @@
 
 typedef int BOOL;
 
-void cleanString(char* temp);
-void clearScreen(void);
-void printCharValue(const char* string);
-void pressKeyToContinue(void); // UNIX
-void pressEnterToContinue(void);
-void printAllANSIColors(void);
-void printAllASCIIChars(void);
-void setInputString(const char* message, char* string, const int maxChar);
-void setInputNumber(const char* message, int* number, const int maxChar, const int min, const int max);
-void setInputPassword(const char* message, char* string, const int maxChar, const char charToDisplay);
-void loadLogin(const char* fileName);
-void createUsersFile(const char* fileName);
+void clean_string(char* temp);
+void clear_screen(void);
+void print_char_value(const char* string);
+void press_key_to_continue(void); // UNIX
+void press_enter_to_continue(void);
+void print_all_ansi_colors(void);
+void print_all_ascii_chars(void);
+void set_input_string(const char* message, char* string, const int maxChar);
+void set_input_number(const char* message, int* number, const int maxChar, const int min, const int max);
+void set_input_password(const char* message, char* string, const int maxChar, const char charToDisplay);
+void load_login(const char* fileName);
+void create_users_file(const char* fileName);
 
-BOOL checkIntBondaries(const int number, const int min, const int max);
+BOOL check_int_bondaries(const int number, const int min, const int max);
 
-char getchUnix(void);
+char getch_unix(void);
 
 #endif
 
