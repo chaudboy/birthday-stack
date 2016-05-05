@@ -10,8 +10,10 @@
 #ifndef DATE_H
 #define DATE_H
 
+#include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include "chaudboy.h"
 
 typedef struct Date
 {
@@ -23,8 +25,7 @@ typedef struct Date
 int daysThisYear;
 int daysPerMonth[12];
 
-#include <time.h>
-#include "chaudboy.h"
+
 
 BOOL is_year_bissextile(int year);
 void set_days_bissextile(void);

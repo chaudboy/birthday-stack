@@ -64,6 +64,20 @@ clean_string(char* temp)
 
 /******************************************************************************/
 void
+clear_string(char* temp)
+{
+    /*
+        Input:
+        Core:
+        Output:
+    */
+
+    strcpy(temp, "\0");
+
+} /* void clear_string(char* temp) */
+
+/******************************************************************************/
+void
 press_key_to_continue(void)
 {
     /*
@@ -303,7 +317,7 @@ load_login(const char* fileName)
 
         if( strcmp(loginFile, login) != 0 && strcmp(loginFile, password) != 0 )
         {
-            MYERROR("wrong login or password");
+            SET_ERRNO("wrong login or password");
         }
 
         else

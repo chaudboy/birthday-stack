@@ -44,11 +44,19 @@
 #define ANSI_COLOR_RESET      "\x1b[0m" // UNIX
 #define CLEAR_SCREEN          "\033[H\033[J" // UNIX // "\033[H\033[2J"
 
-#define MYERROR(s) fputs( ANSI_COLOR_RED ANSI_COLOR_BOLD s ANSI_COLOR_RESET, stderr)
+#define SET_ERRNO(s) if( myErrno ) myErrno = NULL; \
+                        if( s ) \
+                        myErrno = (char*)malloc(sizeof(s)+1); \
+                        strcpy(myErrno, s);
+
+
+
+char* myErrno;
 
 typedef int BOOL;
 
 void clean_string(char* temp);
+void clear_string(char* temp);
 void clear_screen(void);
 void print_char_value(const char* string);
 void press_key_to_continue(void); // UNIX

@@ -91,6 +91,8 @@ main(int argc, char *argv[])
     }while( choice != 8 );
 
     clean_birthdays();
+    free(myErrno);
+    myErrno = NULL;
 
     return EXIT_SUCCESS;
 }

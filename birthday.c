@@ -1,7 +1,7 @@
 /*
     Author: Lionel Jamaigne
     Creation Date: 26/02/2016
-    Last Modified: 03/05/2016
+    Last Modified: 04/05/2016
     Last Modification:
     Known Issues:
     Version: 1.0
@@ -148,7 +148,7 @@ sort_birthdays(const PERSON* birthdayToAdd)
     }
 
     else
-        MYERROR("malloc error in sortBirthdays");
+        SET_ERRNO("malloc error in sortBirthdays");
 
 } /* void sortBirthdays(const PERSON* birthdayToAdd) */
 
@@ -182,29 +182,28 @@ set_birthday(PERSON* ajout)
 
     ajout = (PERSON*)malloc(sizeof(PERSON));
 
-    printf("\t\nEntrez un nom: ");
-    fgets(temp, 12, stdin);
-    clean_string(temp);
+    set_input_string("\t\nEntrez un nom: ", temp, 18);
     strcpy(ajout->nom, temp);
+    clear_string(temp);
 
-    printf("\t\nEntrez un prenom: ");
-    fgets(temp, 12, stdin);
-    clean_string(temp);
+    set_input_string("\t\nEntrez un prenom: ", temp, 18);
     strcpy(ajout->prenom, temp);
+    clear_string(temp);
 
     do
     {
         printf("\t\nEntrez le jour (au format xx): ");
         fgets(temp, 4, stdin);
+        clean_string(temp);
         entier = atoi(temp);
         ret = check_int_bondaries(entier, 1, 31);
 
         if( ret == TRUE )
             ajout->jours = entier;
 
-        clean_string(temp);
-
     }while( ret != TRUE );
+
+    clear_string(temp);
 
     do
     {
@@ -220,17 +219,18 @@ set_birthday(PERSON* ajout)
 
     }while( ret != TRUE );
 
+    clear_string(temp);
+
     do
     {
         printf("\t\nEntrez l'annee (au format xxxx): ");
         fgets(temp, 6, stdin);
+        clean_string(temp);
         entier = atoi(temp);
         ret = check_int_bondaries(entier, 1950, get_current_year());
 
         if( ret == TRUE )
             ajout->annee = entier;
-
-        clean_string(temp);
 
     }while( ret != TRUE );
 
@@ -253,16 +253,18 @@ add_birthday(PERSON *ajout)
         if( first )
         {
             memcpy(first, ajout, sizeof(PERSON));
-            first->psuiv = NULL;
+            //first->psuiv = NULL;
 
-            add_birthday_to_index(first);
+            //add_birthday_to_index(first);
+
+            printf("\nAnniversaire ajoute");
         }
 
         else
-            MYERROR("malloc error in addBirthday");
+            SET_ERRNO("malloc error in addBirthday");
 
-        printf("\nAnniversaire ajoute");
 
+        DEBUG("hello");
     }
 
     else
@@ -297,7 +299,7 @@ print_birthdays(void)
     }
 
     else
-        MYERROR("no birthdays to print\n");
+        SET_ERRNO("no birthdays to print\n");
 
 } /* void printBirthdays(void) */
 
@@ -365,7 +367,7 @@ clean_birthdays(void)
     }
 
     else
-        MYERROR("no birthdays to delete\n");
+        SET_ERRNO("no birthdays to delete\n");
 
 } /* void cleanBirthdays(void) */
 
@@ -475,7 +477,7 @@ save_birthdays(void)
     }
 
     else
-        MYERROR("no birthdays to save\n");
+        SET_ERRNO("no birthdays to save\n");
 
 } /* saveBirthdays(void) */
 
@@ -570,7 +572,7 @@ print_next_birthday(void)
     }
 
     else
-        MYERROR("there is not any birthday in memory\n");
+        SET_ERRNO("there is not any birthday in memory\n");
 
 } /* void printNextBirthday(void) */
 
@@ -711,7 +713,7 @@ delete_birthday(void)
     }
 
     else
-        MYERROR("There is not any birthday in memory");
+        SET_ERRNO("There is not any birthday in memory");
 
 } /* PERSON* deleteBirthday(void) */
 
