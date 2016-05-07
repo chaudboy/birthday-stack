@@ -14,17 +14,23 @@
 #include <time.h>
 #include <stdio.h>
 
+#define USEDEBUG
+
 #if defined(unix) || defined(__unix__) || defined(__APPLE__) || defined(__linux__)
     #include <unistd.h>   //_getch & pressKeyToContinue //
     #include <termios.h>  //_getch & pressKeyToContinue //
+    #ifdef USEDEBUG
+    #define DEBUG(s) fputs( ANSI_COLOR_BOLD ANSI_COLOR_YELLOW s ANSI_COLOR_RESET, stderr)
+    #endif
 #elif defined(_WIN32) || defined(_WIN64)
     #include <windows.h>
+    #ifdef USEDEBUG
+    #define DEBUG(s) fputs(s, stderr)
+    #endif
 #endif
 
-#define USEDEBUG
 
 #ifdef USEDEBUG
-#define DEBUG(s) fputs( ANSI_COLOR_BOLD ANSI_COLOR_YELLOW s ANSI_COLOR_RESET, stderr)
 #endif
 
 #define TRUE 1

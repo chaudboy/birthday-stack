@@ -1,15 +1,18 @@
 # Author: Lionel Jamaigne
 # Creation Date: 10/03/2016
-# Last Modified: 10/04/2016
+# Last Modified: 06/05/2016
 # Last Modification:
 # Known Issues:
 # Version: 1.0
 
 .SILENT:
 
-OBJS = stack.o birthday.o chaudboy.o date.o aes256.o
+OBJS = stack.o person.o chaudboy.o date.o aes256.o
 
-GCC = gcc -w -std=c99
+# -w enlève les warnings
+# -g ajoute des informations de debugging
+
+GCC = gcc -g -std=c99
 
 all: appli
 
@@ -21,9 +24,9 @@ stack.o:	stack.c stack.h
 			echo creation de stack.o
 			$(GCC) -c stack.c
 
-birthday.o:	birthday.c	birthday.h
-			echo creation de birthday.o
-			$(GCC) -c birthday.c
+person.o:	person.c	person.h
+			echo creation de person.o
+			$(GCC) -c person.c
 
 chaudboy.o:	chaudboy.c chaudboy.h
 			echo creation de chaudboy.o
@@ -36,6 +39,10 @@ date.o:		date.c date.h
 aes256.o:	aes256.c aes256.h
 			echo creation de aes256.o
 			$(GCC) -c aes256.c
+
+licence.o:	licence.c licence.h
+			echo creation de licence.o
+			$(GCC) -c licence.c
 
 clean:
 		rm -f $(OBJS)

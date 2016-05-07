@@ -1,7 +1,7 @@
 /*
     Author: Lionel Jamaigne
     Creation Date: 10/03/2016
-    Last Modified: 03/05/2016
+    Last Modified: 06/05/2016
     Last Modification:
     Known Issues:
     Version: 1.0
@@ -13,10 +13,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "birthday.h"
+#include "person.h"
 #include "chaudboy.h"
 
-typedef T;
+typedef int T;
 
 T** create_stack(const int nbElems);
 T* pop_stack(void);

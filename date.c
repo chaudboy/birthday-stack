@@ -1,7 +1,7 @@
 /*
     Author: Lionel Jamaigne
     Creation Date: 08/04/2016
-    Last Modified: 04/05/2016
+    Last Modified: 06/05/2016
     Last Modification:
     Known issues:
     Version: 1.0
@@ -70,7 +70,8 @@ set_days_bissextile(void)
         daysPerMonth[1] = 28;
         daysThisYear = 365;
     }
-}
+
+} /* void set_days_bissextile(void) */
 
 /******************************************************************************/
 MY_DATE
@@ -92,7 +93,33 @@ get_date(void)
 
 
     return today;
-}
+
+} /* MY_DATE get_date(void) */
+
+/******************************************************************************/
+MY_FULL_DATE
+get_full_date(void)
+{
+    /*
+        Input:
+        Core:
+        Output:
+    */
+
+    time_t now = time(0);
+  	struct tm* local = localtime(&now);
+    MY_FULL_DATE today;
+
+    today.day = local->tm_mday;
+    today.month = local->tm_mon + 1;
+  	today.year = local->tm_year + 1900;
+    today.hour = local->tm_hour;
+    today.minute = local->tm_min;
+    today.second = local->tm_sec;
+
+    return today;
+
+} /* MY_FULL_DATE get_full_date(void) */
 
 /******************************************************************************/
 int
@@ -143,7 +170,8 @@ month_to_number(const char* mois)
         ret = 12;
 
     return ret;
-}
+
+} /* int month_to_number(const char* mois) */
 
 /******************************************************************************/
 int
@@ -161,4 +189,5 @@ get_current_year(void)
 	local->tm_year += 1900;
 
 	return local->tm_year;
-}
+
+} /* int t_current_year(void) */

@@ -12,7 +12,7 @@
 #include <ctype.h>
 
 #include "chaudboy.h"
-#include "birthday.h"
+#include "person.h"
 #include "stack.h"
 #include "date.h"
 #include "aes256.h"
@@ -22,7 +22,7 @@
 void check_argument(const int argc, const char *argv[]);
 
 int
-main(int argc, char *argv[])
+main( const int argc, const char *argv[])
 {
     PERSON *ajout = NULL;
     int choice = 0;
@@ -41,7 +41,7 @@ main(int argc, char *argv[])
         printf("\t\n1. Encoder un nouvel anniversaire");
         printf("\t\n2. Afficher les anniversaires");
         printf("\t\n3. Charger un fichier d'anniversaires");
-        printf("\t\n4. Sauvegarder les anniversaires sur fichier");
+        printf("\t\n4. Sauvegarder les anniversaires sur fich ier");
         printf("\t\n5. Afficher le prochain anniversaire");
         printf("\t\n6. Supprimer les anniversaires en cours");
         printf("\t\n7. Supprimer un anniversaire");
@@ -58,6 +58,7 @@ main(int argc, char *argv[])
             case 1: set_birthday(ajout);
                     add_birthday(ajout);
                     free(ajout);
+                    ajout = NULL;
                 break;
 
             case 2: print_birthdays();
@@ -91,6 +92,7 @@ main(int argc, char *argv[])
     }while( choice != 8 );
 
     clean_birthdays();
+
     free(myErrno);
     myErrno = NULL;
 

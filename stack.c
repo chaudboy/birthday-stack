@@ -1,7 +1,7 @@
 /*
     Author: Lionel Jamaigne
     Creation Date: 26/02/2016
-    Last Modified: 03/05/2016
+    Last Modified: 06/05/2016
     Last Modification:
     Known Issues:
     Version: 1.0
@@ -162,25 +162,28 @@ set_template(const char* string)
         typedef int T;
     }
 
+
     else if( strcmp("char", string) == 0 )
     {
         typedef char T;
     }
+
 
     else if( strcmp("float", string) == 0 )
     {
         typedef float T;
     }
 
+
     else if( strcmp("short", string) == 0 )
     {
         typedef short T;
     }
 
+
     else if( strcmp("birthday", string) == 0 )
     {
-        typedef BIRTHDAY T;
-        //DEBUG("je set le template d'annifs\n");
+        typedef PERSON T;
     }
 
     else

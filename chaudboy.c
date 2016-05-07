@@ -204,8 +204,8 @@ set_input_string(const char* message, char* string, const int maxChar)
 
     printf("%s", message);
 
-    fgets(string, maxChar+2, stdin);
-    clean_string(string);
+    fgets(string, maxChar+1, stdin);
+    //clean_string(string);
 
 } /* void setInputString(const char* message, char* string, const int maxChar) */
 
