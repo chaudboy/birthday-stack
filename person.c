@@ -94,8 +94,8 @@ sort_birthdays(const PERSON* birthdayToAdd)
 
     if( newBirthdayZone )
     {
-        //memcpy(newBirthdayZone, birthdayToAdd, sizeof(PERSON));
-        copy_birthday(newBirthdayZone, birthdayToAdd, FALSE);
+        memcpy(newBirthdayZone, birthdayToAdd, sizeof(PERSON));
+        //copy_birthday(newBirthdayZone, birthdayToAdd, FALSE);
 
         PERSON* temp = first;
 
@@ -253,23 +253,17 @@ add_birthday(PERSON *ajout)
 
         if( first )
         {
-            DEBUG("avant de copier\n");
             memcpy(first, ajout, sizeof(PERSON));
-            //copy_birthday(first, ajout, FALSE);
-            DEBUG("j'ai fini de copier\n");
+
             first->psuiv = NULL;
 
             add_birthday_to_index(first);
-            DEBUG("apres le add_birthday_to_index\n");
 
             printf("\nAnniversaire ajoute");
         }
 
         else
             set_errno("malloc error in addBirthday");
-
-
-        DEBUG("hello");
     }
 
     else
