@@ -93,8 +93,7 @@ main(const int argc, const char *argv[])
 
     clean_birthdays();
 
-    free(myErrno);
-    myErrno = NULL;
+    clean_errno();
 
     return EXIT_SUCCESS;
 }
