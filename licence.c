@@ -18,7 +18,7 @@ generate_licence(void)
         Output:
     */
 
-    
+
 
 } /* char* generate_licence(void) */
 
@@ -88,7 +88,7 @@ to_hexa(const int number, char* toHexa)
     }
 
     else
-        SET_ERRNO("Not enough memory space for hexadecimal value");
+        set_errno("Not enough memory space for hexadecimal value");
 
 } /* void to_hexa(const int number, char* toHexa) */
 

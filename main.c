@@ -22,7 +22,7 @@
 void check_argument(const int argc, const char *argv[]);
 
 int
-main( const int argc, const char *argv[])
+main(const int argc, const char *argv[])
 {
     PERSON *ajout = NULL;
     int choice = 0;
@@ -55,7 +55,7 @@ main( const int argc, const char *argv[])
 
         switch(choice)
         {
-            case 1: set_birthday(ajout);
+            case 1: set_birthday(&ajout);
                     add_birthday(ajout);
                     free(ajout);
                     ajout = NULL;

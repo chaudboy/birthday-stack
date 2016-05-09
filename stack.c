@@ -37,7 +37,7 @@ create_stack(const int nbElems)
 
     else
     {
-        SET_ERRNO("malloc error in createStack");
+        set_errno("malloc error in createStack");
     }
 
 
@@ -60,7 +60,7 @@ push_stack(T* elem)
         tab[nbCurElems++] = elem;
 
     else
-        SET_ERRNO("The stack is currently full");
+        set_errno("The stack is currently full");
 
 } /* void pushStack(T* elem) */
 
@@ -83,7 +83,7 @@ pop_stack(void)
     }
 
     else
-        SET_ERRNO("The stack is currently empty");
+        set_errno("The stack is currently empty");
 
     return NULL;
 
@@ -187,6 +187,6 @@ set_template(const char* string)
     }
 
     else
-        SET_ERRNO("wrong template in setTemplate");
+        set_errno("wrong template in setTemplate");
 
 } /* void setTemplate(const char* string) */

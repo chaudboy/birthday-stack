@@ -1,7 +1,7 @@
 /*
     Author: Lionel Jamaigne
     Creation Date: 26/02/2016
-    Last Modified: 06/05/2016
+    Last Modified: 08/05/2016
     Last Modification:
     Known Issues:
     Version: 1.0
@@ -148,7 +148,7 @@ sort_birthdays(const PERSON* birthdayToAdd)
     }
 
     else
-        SET_ERRNO("malloc error in sortBirthdays");
+        set_errno("malloc error in sortBirthdays");
 
 } /* void sortBirthdays(const PERSON* birthdayToAdd) */
 
@@ -168,7 +168,7 @@ is_empty_birthday_list(void)
 
 /******************************************************************************/
 void
-set_birthday(PERSON* ajout)
+set_birthday(PERSON** ajout)
 {
     /*
         Input:  the address of a PERSON struct
@@ -180,14 +180,14 @@ set_birthday(PERSON* ajout)
     int entier = 0;
     BOOL ret = FALSE;
 
-    ajout = (PERSON*)malloc(sizeof(PERSON));
+    *ajout = (PERSON*)malloc(sizeof(PERSON));
 
     set_input_string("\t\nEntrez un nom: ", temp, 18);
-    strcpy(ajout->nom, temp);
+    strcpy((*ajout)->nom, temp);
     clear_string(temp);
 
     set_input_string("\t\nEntrez un prenom: ", temp, 18);
-    strcpy(ajout->prenom, temp);
+    strcpy((*ajout)->prenom, temp);
     clear_string(temp);
 
     do
@@ -199,7 +199,7 @@ set_birthday(PERSON* ajout)
         ret = check_int_bondaries(entier, 1, 31);
 
         if( ret == TRUE )
-            ajout->birthdate.day = entier;
+            (*ajout)->birthdate.day = entier;
 
     }while( ret != TRUE );
 
@@ -213,7 +213,7 @@ set_birthday(PERSON* ajout)
         ret = check_int_bondaries(entier, 1, 12);
 
         if( ret == TRUE )
-            ajout->birthdate.month = entier;
+            (*ajout)->birthdate.month = entier;
 
         clean_string(temp);
 
@@ -230,7 +230,7 @@ set_birthday(PERSON* ajout)
         ret = check_int_bondaries(entier, 1950, get_current_year());
 
         if( ret == TRUE )
-            ajout->birthdate.year = entier;
+            (*ajout)->birthdate.year = entier;
 
     }while( ret != TRUE );
 
@@ -254,8 +254,8 @@ add_birthday(PERSON *ajout)
         if( first )
         {
             DEBUG("avant de copier\n");
-            //memcpy(first, ajout, sizeof(PERSON));
-            copy_birthday(first, ajout, FALSE);
+            memcpy(first, ajout, sizeof(PERSON));
+            //copy_birthday(first, ajout, FALSE);
             DEBUG("j'ai fini de copier\n");
             first->psuiv = NULL;
 
@@ -266,7 +266,7 @@ add_birthday(PERSON *ajout)
         }
 
         else
-            SET_ERRNO("malloc error in addBirthday");
+            set_errno("malloc error in addBirthday");
 
 
         DEBUG("hello");
@@ -310,7 +310,7 @@ print_birthdays(void)
     }
 
     else
-        SET_ERRNO("no birthdays to print\n");
+        set_errno("no birthdays to print\n");
 
 } /* void printBirthdays(void) */
 
@@ -346,20 +346,7 @@ clean_birthdays(void)
     if( !is_empty_birthday_list() )
     {
         PERSON *temp = first;
-
-        /*do
-        {
-            if( current->psuiv )
-                next = current->psuiv;
-
-            current = NULL;
-            free(current);
-
-
-            if( next )
-                current = next;
-
-        }while( next );*/
+        int i = 0;
 
         do
         {
@@ -371,11 +358,10 @@ clean_birthdays(void)
                 temp = first;
             }
 
-
             free(first);
             first = NULL;
 
-        }while( temp->psuiv );
+        }while( ++i<nbCurBirthdays );
 
         printf("Anniversair%s supprim%ss", nbCurBirthdays > 1 ? "es" : "e", nbCurBirthdays > 1 ? "es" : "e");
 
@@ -383,7 +369,7 @@ clean_birthdays(void)
     }
 
     else
-        SET_ERRNO("no birthdays to delete\n");
+        set_errno("no birthdays to delete\n");
 
 } /* void cleanBirthdays(void) */
 
@@ -493,7 +479,7 @@ save_birthdays(void)
     }
 
     else
-        SET_ERRNO("no birthdays to save\n");
+        set_errno("no birthdays to save\n");
 
 } /* saveBirthdays(void) */
 
@@ -558,7 +544,7 @@ get_birthday(const int rank)
     }
 
     else
-        SET_ERRNO("There isn't any birthday to get");
+        set_errno("There isn't any birthday to get");
 
     return ret;
 
@@ -590,7 +576,7 @@ print_next_birthday(void)
     }
 
     else
-        SET_ERRNO("there is not any birthday in memory\n");
+        set_errno("there is not any birthday in memory\n");
 
 } /* void printNextBirthday(void) */
 
@@ -731,7 +717,7 @@ delete_birthday(void)
     }
 
     else
-        SET_ERRNO("There is not any birthday in memory");
+        set_errno("There is not any birthday in memory");
 
 } /* PERSON* deleteBirthday(void) */
 
@@ -806,7 +792,7 @@ check_if_birthday_soon(void)
     }
 
     else
-        SET_ERRNO("there is no birthday to check for");
+        set_errno("there is no birthday to check for");
 
 } /* PERSON* checkIfBirthdaySoon(void) */
 

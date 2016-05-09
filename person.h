@@ -1,7 +1,7 @@
 /*
     Author: Lionel Jamaigne
     Creation Date: 10/03/2016
-    Last Modified: 5/05/2016
+    Last Modified: 08/05/2016
     Last Modification:
     Known Issues:
     Version: 1.0
@@ -35,7 +35,7 @@ void print_birthday(const PERSON* temp);
 void set_index_birthdays(void);
 void load_birthdays(void);
 void save_birthdays(void);
-void set_birthday(PERSON* ajout);
+void set_birthday(PERSON** ajout);
 void add_birthday(PERSON* ajout);
 void clean_birthdays(void);
 void print_next_birthday(void);

@@ -1,7 +1,7 @@
 /*
     Author: Lionel Jamaigne
     Creation Date: 14/03/2016
-    Last Modified: 04/05/2016
+    Last Modified: 09/05/2016
     Last Modification:
     Known Issues:
     Version: 1.0
@@ -317,7 +317,7 @@ load_login(const char* fileName)
 
         if( strcmp(loginFile, login) != 0 && strcmp(loginFile, password) != 0 )
         {
-            SET_ERRNO("wrong login or password");
+            set_errno("wrong login or password");
         }
 
         else
@@ -389,3 +389,45 @@ getch_unix(void)
     return buf;*/
 
 } /* char getchUnix(void) */
+
+/******************************************************************************/
+void
+set_errno(const char* message)
+{
+    /*
+        Input:
+        Core:
+        Output:
+    */
+
+    if( myErrno )
+    {
+        free(myErrno);
+        myErrno = NULL;
+    }
+
+    if( !message )
+        return;
+
+    myErrno = (char*)malloc(sizeof(message)+1);
+    strcpy(myErrno, message);
+
+} /* void set_errno(const char* message) */
+
+/******************************************************************************/
+void
+clean_errno(void)
+{
+    /*
+        Input:
+        Core:
+        Output:
+    */
+
+    if( myErrno )
+    {
+        free(myErrno);
+        myErrno = NULL;
+    }
+
+} /* void clean_errno(void) */

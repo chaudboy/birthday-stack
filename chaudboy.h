@@ -1,7 +1,7 @@
 /*
     Author: Lionel Jamaigne
     Creation Date: 26/02/2016
-    Last Modified: 27/04/2016
+    Last Modified: 9/04/2016
     Last Modification:
     Known Issues: none
     Version: 1.0
@@ -29,7 +29,6 @@
     #endif
 #endif
 
-
 #ifdef USEDEBUG
 #endif
 
@@ -50,13 +49,6 @@
 #define ANSI_COLOR_RESET      "\x1b[0m" // UNIX
 #define CLEAR_SCREEN          "\033[H\033[J" // UNIX // "\033[H\033[2J"
 
-#define SET_ERRNO(s) if( myErrno ) myErrno = NULL; \
-                        if( s ) \
-                        myErrno = (char*)malloc(sizeof(s)+1); \
-                        strcpy(myErrno, s);
-
-
-
 char* myErrno;
 
 typedef int BOOL;
@@ -74,6 +66,8 @@ void set_input_number(const char* message, int* number, const int maxChar, const
 void set_input_password(const char* message, char* string, const int maxChar, const char charToDisplay);
 void load_login(const char* fileName);
 void create_users_file(const char* fileName);
+void set_errno(const char* message);
+void clean_errno(void);
 
 BOOL check_int_bondaries(const int number, const int min, const int max);
 
